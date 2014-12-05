@@ -1,0 +1,45 @@
+body {
+  margin:0;
+  padding:0; 
+  min-width: 400px;
+  min-height: 100%;
+}
+
+.container {
+  width: 100%;
+  min-width:
+}
+
+#droneUi {
+  width: 100%;
+}
+
+#droneUi div.inline {
+  width: 33.3%;
+  height: 100%;
+  display: inline-block;
+  outline: thin red solid;
+}
+
+#droneDown {
+  float: left;
+  margin: auto;
+  background: yellow;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#droneInput {
+  width:33.4%;
+  margin:0 auto;
+  background-color: red;
+  position: relative;
+  z-index: 1;
+}
+#droneUp {
+  float: right;
+  background: cyan;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
