@@ -18,6 +18,7 @@ function createSoundPack() {
 }
 
 function pitchChange(details) {
+  settings.soundPack[settings.currentPitch].stop();
   var el = this,
       direction = $(this).data("direction"),
       scale = settings.notes;
