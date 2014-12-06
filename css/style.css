@@ -62,3 +62,7 @@ body {
 #droneUp:hover {
   cursor: pointer;
 }
+
+#stop {
+  display: none;
+}
