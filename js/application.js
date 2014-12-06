@@ -14,7 +14,6 @@ function createSoundPack() {
       loop: true 
     });
   }
-  //console.log(settings.soundPack);
 }
 
 function pitchChange(details) {
@@ -22,7 +21,6 @@ function pitchChange(details) {
   var el = this,
       direction = $(this).data("direction"),
       scale = settings.notes;
-  console.log('Current pitch is ' + settings.currentPitch + " - " + scale[settings.currentPitch]);
   if (direction === "down") {
     if (settings.currentPitch === 0) {
       settings.currentPitch = scale.length-1;
@@ -39,7 +37,6 @@ function pitchChange(details) {
       settings.currentPitch++;
     }
   }
-  console.log('Next pitch is ' + settings.currentPitch + " - " + scale[settings.currentPitch]);
   $(el).parent().find("#droneInput").find("input").val(settings.notes[settings.currentPitch]);
   if (settings.isPlaying === true){
     playPitch();
@@ -49,15 +46,14 @@ function pitchChange(details) {
 function playPitch() {
   settings.soundPack[settings.currentPitch].stop();
   settings.isPlaying = true;
-  console.log("Should play "+settings.soundPack[settings.currentPitch]);
   settings.soundPack[settings.currentPitch].play();
   $(this).hide();
   $(this).siblings("#stop").show();
 }
 
 function stopPitch() {
-  settings.isPlaying = false;
   settings.soundPack[settings.currentPitch].stop();
+  settings.isPlaying = false;
   $(this).hide();
   $(this).siblings("#play").show();
 }
