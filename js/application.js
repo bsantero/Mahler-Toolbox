@@ -9,8 +9,8 @@ settings.rebuildSoundPack = function(scale, startNote) {
 function createSoundPack() {
   for(var soundIndex = 0; soundIndex < settings.notes.length; soundIndex++) {
     settings.soundPack[soundIndex] = new Howl({
-      urls: ['media/5seconds/OGG/'+settings.notes[soundIndex]+'.ogg', 'media/5seconds/MP3'+settings.notes[soundIndex]+'.mp3'],
-      volume: .5,
+      urls: ['media/OGG/'+settings.notes[soundIndex]+'.ogg', 'media/MP3'+settings.notes[soundIndex]+'.mp3'],
+      volume: .7,
       loop: true 
     });
   }
