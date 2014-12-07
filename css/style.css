@@ -50,7 +50,7 @@ body {
   box-sizing: border-box;
 }
 
-#droneInput {
+#droneDisplay {
   width: 33.2% !important;
   margin: 0 auto 0 1px !important;
   position: relative;
@@ -71,16 +71,21 @@ body {
   cursor: pointer;
 }
 
-#droneInput input,
-#droneInput button {
+#droneDisplay span,
+#droneDisplay button {
   padding: 0;
   margin: 0;
 }
 
-#droneInput input {
-  width: 8rem;
-  font-size: 3rem;
+#droneDisplay span {
+  width: 100%;
+  font-size: 5rem;
   text-align: center;
+}
+
+
+#droneDisplay button {
+  font-size: 2rem;
 }
 
 #stop {

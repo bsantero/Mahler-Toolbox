@@ -1,10 +1,8 @@
 var settings = {};
-settings.currentPitch = "3";
+settings.currentPitch = 3;
 settings.notes = ["4A","4Asharp","4B","5C","5Csharp","5D","5Dsharp","5E","5F","5Fsharp","5G","5Gsharp"];
 settings.soundPack = [];
 settings.isPlaying = false;
-settings.rebuildSoundPack = function(scale, startNote) {
-};
 
 function createSoundPack() {
   for(var soundIndex = 0; soundIndex < settings.notes.length; soundIndex++) {
@@ -18,10 +16,10 @@ function createSoundPack() {
 
 function pitchChange(details) {
   settings.soundPack[settings.currentPitch].stop();
-  var el = this,
-      direction = $(this).data("direction"),
+  var direction = $(this).data("direction"),
       scale = settings.notes,
-      displayUpdate = settings.notes[settings.currentPitch];
+      displayOctave,
+      displayPitch;
   if (direction === "down") {
     if (settings.currentPitch === 0) {
       settings.currentPitch = scale.length-1;
@@ -38,21 +36,25 @@ function pitchChange(details) {
       settings.currentPitch++;
     }
   }
-  if (displayUpdate[2] === 'f' ) {
-    displayUpdate = displayUpdate[1]+"b";    
-  } else if (displayUpdate[2] === 's' ) {
-    displayUpdate = displayUpdate[1]+"#";    
+  displayPitch = settings.notes[settings.currentPitch];
+  displayOctave = displayPitch[0];
+  if (displayPitch[2] === 'f' ) {
+    displayPitch = displayPitch[1]+"b";    
+  } else if (displayPitch[2] === 's' ) {
+    displayPitch = displayPitch[1]+"#";    
   } else {
-    displayUpdate = displayUpdate[1];
+    displayPitch = displayPitch[1];
   }
-
-  $(el).parent().find("#droneInput").find("input").val(displayUpdate);
+  //alert("pitch: "+settings.currentPitch+" - "+ displayPitch);
+  $("span.display.pitch").html(displayPitch);
+  $("span.display.octave").html(displayOctave);
   if (settings.isPlaying === true){
     playPitch();
   }
 }
 
 function playPitch() {
+  console.log("playing "+settings.currentPitch);
   settings.soundPack[settings.currentPitch].stop();
   settings.isPlaying = true;
   settings.soundPack[settings.currentPitch].play();
@@ -74,6 +76,6 @@ $(document).ready(function() {
   $(".changePitch.up").on("click", pitchChange);
   $("#play").on("click", playPitch);
   $("#stop").on("click", stopPitch);
-  console.log(settings.currentPitch);
+  console.log("pitch: "+settings.currentPitch);
 
 });
