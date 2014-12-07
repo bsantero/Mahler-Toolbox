@@ -25,11 +25,15 @@ body {
   font-size: 1.5rem;
 }
 
+#navbar ul li {
+  display: inline;
+}
+
 #droneUi {
   width: 100%;
 }
 
-#droneUi div.inline {
+#droneUi .inline {
   width: 33.3%;
   height: 100%;
   display: inline-block;
@@ -45,15 +49,18 @@ body {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+
 #droneInput {
-  float: left;
-  width:33.4%;
-  margin:0 auto;
+  width: 33.2% !important;
+  margin: 0 auto 0 1px !important;
   position: relative;
   z-index: 1;
+  padding: 0 !important;
+  margin: 0;
 }
+
 #droneUp {
-  float: left;
+  float: right;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -62,6 +69,18 @@ body {
 #droneDown:hover,
 #droneUp:hover {
   cursor: pointer;
+}
+
+#droneInput input,
+#droneInput button {
+  padding: 0;
+  margin: 0;
+}
+
+#droneInput input {
+  width: 8rem;
+  font-size: 3rem;
+  text-align: center;
 }
 
 #stop {

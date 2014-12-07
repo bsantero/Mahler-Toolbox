@@ -20,7 +20,8 @@ function pitchChange(details) {
   settings.soundPack[settings.currentPitch].stop();
   var el = this,
       direction = $(this).data("direction"),
-      scale = settings.notes;
+      scale = settings.notes,
+      displayUpdate = settings.notes[settings.currentPitch];
   if (direction === "down") {
     if (settings.currentPitch === 0) {
       settings.currentPitch = scale.length-1;
@@ -37,7 +38,15 @@ function pitchChange(details) {
       settings.currentPitch++;
     }
   }
-  $(el).parent().find("#droneInput").find("input").val(settings.notes[settings.currentPitch]);
+  if (displayUpdate[2] === 'f' ) {
+    displayUpdate = displayUpdate[1]+"b";    
+  } else if (displayUpdate[2] === 's' ) {
+    displayUpdate = displayUpdate[1]+"#";    
+  } else {
+    displayUpdate = displayUpdate[1];
+  }
+
+  $(el).parent().find("#droneInput").find("input").val(displayUpdate);
   if (settings.isPlaying === true){
     playPitch();
   }
