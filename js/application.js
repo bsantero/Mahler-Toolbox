@@ -55,9 +55,9 @@ function pitchChange(details) {
 
 function playPitch() {
   console.log("playing "+settings.currentPitch);
-  settings.soundPack[settings.currentPitch].stop();
+  //settings.soundPack[settings.currentPitch].stop();
   settings.isPlaying = true;
-  settings.soundPack[settings.currentPitch].play();
+  //settings.soundPack[settings.currentPitch].play();
   $(this).hide();
   $(this).siblings("#stop").show();
 }
@@ -78,4 +78,12 @@ $(document).ready(function() {
   $("#stop").on("click", stopPitch);
   console.log("pitch: "+settings.currentPitch);
 
+var context = new AudioContext(); // Create audio container
+oscillator = context.createOscillator(); // Create bass guitar
+gainNode = context.createGain(); // Create boost pedal 
+oscillator.connect(gainNode); // Connect bass guitar to boost pedal
+gainNode.connect(context.destination); // Connect boost pedal to amplifier
+gainNode.gain.value = 1; // Set boost pedal to 30 percent volume
+oscillator.frequency.value = 200;
+oscillator.start(); // Play bass guitar instantly
 });

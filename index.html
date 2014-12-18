@@ -18,24 +18,30 @@
         <li>Drones</li>
         <li>Metronome</li>
       </ul>
+        <span class="display frequency">440</span>
+
     </div>
     <div id="droneUi">
-      <div id="droneUp" class="inline changePitch buttonDiv up" data-direction="up"><p>Pitch Up</p></div>
-      <div id="droneDisplay" class="inline changePitch nopad">
-        <span class="display pitch">C</span>
-        <span class="display octave">5</span>
+      <div id="droneUp" class="inline changePitch buttonDiv up" data-direction="up">
+        <p>Pitch Up</p>
+      </div>
+      <div id="droneDisplay" class="inline nopad">
+        <span class="display pitch">A</span>
+        <span class="display octave">4</span>
         <div class="controls">
           <button id="play">play</button>
           <button id="stop">stop</button>
         </div>
       </div>
-      <div id="droneDown" class="inline changePitch buttonDiv down" data-direction="down"><p>Pitch Down</p></div>
+      <div id="droneDown" class="inline changePitch buttonDiv down" data-direction="down">
+        <p>Pitch Down</p>
+      </div>
     </div>
   </div>
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script src="js/howler.min.js"></script>
-  <script src="js/application.js"></script>
+  <script src="js/oscillator.js"></script>
 </body>
 
 </html>

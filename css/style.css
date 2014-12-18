@@ -34,6 +34,7 @@ body {
 }
 
 #droneUi .inline {
+  float: left;
   width: 33.3%;
   height: 100%;
   display: inline-block;
@@ -43,7 +44,6 @@ body {
 }
 
 #droneDown {
-  float: left;
   margin: auto;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -83,6 +83,9 @@ body {
   text-align: center;
 }
 
+#droneDisplay span.octave {
+  font-size: 3rem;
+}
 
 #droneDisplay button {
   font-size: 2rem;
@@ -95,6 +98,6 @@ body {
 @media (max-width: 768px) {
   #droneUi div.inline {
     clear: both;
-    width: 100%;
+    width: 100% !important;
   }
 }
