@@ -107,11 +107,11 @@ function newOsc() {
 function playPitch() {
   newOsc();
   console.log("playing "+settings.currentPitch.frequency);
+  oscillator.frequency.value = settings.currentPitch.frequency;
   if (window.AudioContext) {
-    oscillator.frequency.value = settings.currentPitch.frequency;
     oscillator.start();
   } else {
-    oscillator.start(settings.currentPitch.frequency);
+    oscillator.start(context.currentTime);
   }
   settings.isPlaying = true;
   $("button#play").hide();
@@ -122,7 +122,7 @@ function stopPitch() {
   if (window.AudioContext) {
     oscillator.stop();
   } else {
-    oscillator.stop(settings.currentPitch.frequency);
+    oscillator.stop(context.currentTime);
   }
   settings.isPlaying = false;
   $("button#stop").hide();
