@@ -15,7 +15,7 @@
       <h5 id="pageSubtitle">Tools that Musicians should use</h3>
     </div>
 
-    <div id="navbar">
+    <div id="navbar" class="hide">
       <ul>
         <li>Drones</li>
         <li>Metronome</li>
@@ -23,6 +23,7 @@
         <span class="display frequency">440</span>
 
     </div>
+
     <div id="droneUi">
       <div id="droneUp" class="inline changePitch buttonDiv up" data-direction="up">
         <p>Pitch Up</p>
@@ -33,19 +34,29 @@
         <div class="controls">
           <button id="play">play</button>
           <button id="stop">stop</button>
+          <button id="default">default</button>
+          <button id="reset">reset</button>
         </div>
       </div>
       <div id="droneDown" class="inline changePitch buttonDiv down" data-direction="down">
         <p>Pitch Down</p>
       </div>
     </div>
+
+    <div class="clearfix">
+      <h3>Keyboard Shortcuts:</h3>
+      <p>Start/Stop: Spacebar</p>
+      <p>Reset: Shift</p>
+      <p>Pitch Up: Left side of keyboard</p>
+      <p>Pitch Down: Right side of keyboard</p>
+    </div>
   </div>
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-  <script src="js/howler.min.js"></script>
-  <script src="js/oscillator.js"></script>
-  <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+  <script src="js/oscillator.js"></script>
+  <script src="js/mousetrap.min.js"></script>
+  <!-- Latest compiled and minified JavaScript -->
 </body>
 
 </html>
