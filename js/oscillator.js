@@ -19,7 +19,7 @@ function calcFreq(direction, reset) {
     pitch.frequency = pitch.frequency * Math.pow(1.059463094359, exponent);
   }
   oscillator.frequency.value = pitch.frequency;
-  $("span.display.frequency").html(pitch.frequency);
+  $("span.display.frequency").html(Math.round(pitch.frequency) + "Hz");
 }
 
 function pitchChange(keydir) {

@@ -6,50 +6,60 @@
   <link rel="stylesheet" type="text/css" href="css/reset.css" />
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 </head>
 
 <body>
-  <div class="container">
-    <div id="siteBranding">
-      <h1 id="pageTitle">Mahler Toolbox</h1>
-      <h5 id="pageSubtitle">Tools that Musicians should use</h3>
+  <div class="container-fluid">
+    <div id="siteTitles" class="row">
+      <h1 id="pageTitle">Mahler Box</h1>
+      <h5 id="pageSubtitle">Toolbox for Musicians</h5>
     </div>
 
-    <div id="navbar" class="hide">
+    <div id="navbar" class="hide row">
       <ul>
         <li>Drones</li>
         <li>Metronome</li>
       </ul>
-        <span class="display frequency">440</span>
-
     </div>
 
-    <div id="droneUi">
-      <div id="droneUp" class="inline changePitch buttonDiv up" data-direction="up">
-        <p>Pitch Up</p>
+    <div id="droneUi" class="row">
+      <div id="droneUp" class="changePitch buttonDiv up col-lg-4" data-direction="up">
+        <h1 class="vAlignCenter">Pitch Up</h1>
       </div>
-      <div id="droneDisplay" class="inline nopad">
-        <span class="display pitch">A</span>
-        <span class="display octave">4</span>
-        <div class="controls">
-          <button id="play">play</button>
-          <button id="stop">stop</button>
-          <button id="default">default</button>
-          <button id="reset">reset</button>
+      <div id="droneDisplay" class="nopad col-lg-4">
+        <div class="vAlignCenter">
+          <span class="display pitch">A</span>
+          <span class="display octave">4</span>
+          <span class="display frequency">440Hz</span>
+          <div class="controls">
+            <button id="play">play</button>
+            <button id="stop">stop</button>
+            <button id="default">default</button>
+            <button id="reset">reset</button>
+          </div>
         </div>
       </div>
-      <div id="droneDown" class="inline changePitch buttonDiv down" data-direction="down">
-        <p>Pitch Down</p>
+      <div id="droneDown" class="changePitch buttonDiv down col-lg-4" data-direction="down">
+        <h1 class="vAlignCenter">Pitch Down</h1>
       </div>
     </div>
 
-    <div class="clearfix">
+    <div class="hide">
       <h3>Keyboard Shortcuts:</h3>
       <p>Start/Stop: Spacebar</p>
       <p>Reset: Shift</p>
       <p>Pitch Up: Left side of keyboard</p>
       <p>Pitch Down: Right side of keyboard</p>
     </div>
+  </div>
+
+  <div id="footer" class="container">
+      <nav class="navbar navbar-fixed-bottom">
+        <div class="navbar-inner navbar-content-center">
+          <p class="credit">Created by <a href="http://briansantero.com">Brian Santero</a></p>
+        </div>
+      </nav>
   </div>
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
