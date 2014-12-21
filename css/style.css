@@ -148,16 +148,12 @@ body {
   color: #FFF !important;
 }
 
-@media (min-width: 476px) {
-  #droneDisplay {
-    height: 50vh;
-  }
-}
 @media (min-width: 768px) {
-  
-  #droneUi {
-
-  }
+    #droneDisplay,
+    #droneUp,
+    #droneDown {
+      height: 80vh;
+    }
 
   #droneDisplay {
     border-top: none;
@@ -169,4 +165,50 @@ body {
   #droneDisplay button {
     margin: 1rem;
   }
+
+  #footer {
+    clear: both;
+  }
+}
+
+@media (min-width: 500px) and (orientation:landscape) {
+
+  #droneDisplay,
+  #droneUp,
+  #droneDown {
+    height: 80vh;
+  }
+
+  .col-sm-4 {
+    float: left;
+    width: 33.33333333%;
+  }
+  
+  #droneDisplay {
+    border-top: none;
+    border-bottom: none;
+    border-left: 3px solid #754B75;
+    border-right: 3px solid #754B75;
+  }
+  
+  #droneDisplay button {
+    margin: .2rem;
+  }
+
+}
+
+@media (max-width: 768px) and (orientation: landscape){
+  
+#droneDisplay span {
+  font-size: 5rem;
+}
+
+#droneDisplay span.octave {
+  font-size: 3rem;
+}
+
+#droneDisplay span.frequency {
+  font-size: 3rem;
+}
+
 }
