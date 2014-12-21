@@ -149,6 +149,21 @@ body {
   color: #FFF !important;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 1200px) {
+  
+  #droneUi {
 
+  position: relative;
+  /*top: 50%;*/
+  -webkit-transform: translateY(50%);
+  -ms-transform: translateY(50%);
+  transform: translateY(50%);
+  }
+
+  #droneDisplay {
+    border-top: none;
+    border-bottom: none;
+    border-left: 3px solid #754B75;
+    border-right: 3px solid #754B75;
+  }
 }
