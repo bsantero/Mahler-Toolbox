@@ -1,99 +1,145 @@
 var settings = {};
+settings.arrayPos = {"cur":36, "user":36};
 settings.currentPitch = {"name": "A", "octave": 4, "frequency": 440};
-settings.userDef = {"name": "A", "octave": 4, "frequency": 440};
+settings.userPitch = {"name": "A", "octave": 4, "frequency": 440};
+settings.defaultPitch = {"name": "A", "octave": 4, "frequency": 440};
 settings.isPlaying = false;
+settings.notes = [];
+settings.range = {"minimum": 54, "maximum": 1761};
 //settings.keydir = null;
 
-function calcFreq(direction, reset) {
-  var pitch = settings.currentPitch,
-    userPitch = settings.userDef;
-    exponent = undefined;
-  if (reset) {
-    pitch.name = userPitch.name;
-    pitch.octave = userPitch.octave;
-    pitch.frequency = userPitch.frequency;
-    $("span.display.pitch").html(pitch.name);
-    $("span.display.octave").html(pitch.octave);
-  } else {
-    if (direction === "up") exponent = 1; else if (direction === "down") exponent = -1;
-    pitch.frequency = pitch.frequency * Math.pow(1.059463094359, exponent);
-  }
-  oscillator.frequency.value = pitch.frequency;
-  $("span.display.frequency").html(Math.round(pitch.frequency) + "Hz");
+function Note(name, octave, frequency) {
+  this.name = name;
+  this.octave = octave;
+  this.frequency = frequency;
 }
 
-function pitchChange(keydir) {
-  var direction = keydir || $(this).data("direction"),
-    pitch = settings.currentPitch;
-  if ((direction === "up" && pitch.frequency * Math.pow(1.059463094359, 1) >= 1761) || (direction === "down" && pitch.frequency * Math.pow(1.059463094359, -1) <= 54 )) return;
-  switch (pitch.name) {
-    case "A":
-      if (direction === "up") {
-        pitch.name = "A#";
-      } else pitch.name = "G#";
-      break;
-    case "A#":
-      if (direction === "up") {
-        pitch.name = "B";
-      } else pitch.name = "A";
-      break;
-    case "B":
-      if (direction === "up") {
-        pitch.name = "C";
-        pitch.octave++;
-      } else pitch.name = "A#";
-      break;
-    case "C":
-      if (direction === "up") {pitch.name = "C#";} else {
-        pitch.name = "B";
-        pitch.octave--;
-      }
-      break;
-    case "C#":
-      if (direction === "up") {
-        pitch.name = "D";
-      } else pitch.name = "C";
-      break;
-    case "D":
-      if (direction === "up") {
-        pitch.name = "D#";
-      } else pitch.name = "C#";
-      break;
-    case "D#":
-      if (direction === "up") {
-        pitch.name = "E";
-      } else pitch.name = "D";
-      break;
-    case "E":
-      if (direction === "up") {
-        pitch.name = "F";
-      } else pitch.name = "D#";
-      break;
-    case "F":
-      if (direction === "up") {
-        pitch.name = "F#";
-      } else pitch.name = "E";
-      break;
-    case "F#":
-      if (direction === "up") {
-        pitch.name = "G";
-      } else pitch.name = "F";
-      break;
-    case "G":
-      if (direction === "up") {
-        pitch.name = "G#";
-      } else pitch.name = "F#";
-      break;
-    case "G#":
-      if (direction === "up") {
-        pitch.name = "A";
-      } else pitch.name = "G";
-      break;
+function createNoteFreqs() {
+  var base = settings.currentPitch,
+      notes = settings.notes,
+      newNote;
+  newNote = new Note(base.name, base.octave, base.frequency);
+  //console.log(newNote);
+  notes.push(newNote);
+  //console.log(notes.length);
+  while ((notes[notes.length-1].frequency * Math.pow(1.059463094359, 1)) <= settings.range.maximum) {
+    var nextName,
+        nextOctave,
+        nextFrequency;
+    switch (notes[notes.length-1].name) {
+      case "A":
+        nextName = "Bb";
+        nextOctave = notes[notes.length-1].octave;
+        break;
+      case "Bb":
+        nextName = "B";
+        nextOctave = notes[notes.length-1].octave;
+        break;
+      case "B":
+        nextName = "C";
+        nextOctave = notes[notes.length-1].octave + 1;
+        break;
+      case "C":
+        nextName = "C#";
+        nextOctave = notes[notes.length-1].octave;
+        break;
+      case "C#":
+        nextName = "D";
+        nextOctave = notes[notes.length-1].octave;
+        break;
+      case "D":
+        nextName = "D#";
+        nextOctave = notes[notes.length-1].octave;
+        break;
+      case "D#":
+        nextName = "E";
+        nextOctave = notes[notes.length-1].octave;
+        break;
+      case "E":
+        nextName = "F";
+        nextOctave = notes[notes.length-1].octave;
+        break;
+      case "F":
+        nextName = "F#";
+        nextOctave = notes[notes.length-1].octave;
+        break;
+      case "F#":
+        nextName = "G";
+        nextOctave = notes[notes.length-1].octave;
+        break;
+      case "G":
+        nextName = "G#";
+        nextOctave = notes[notes.length-1].octave;
+        break;
+      case "G#":
+        nextName = "A";
+        nextOctave = notes[notes.length-1].octave;
+        break
+    }
+    nextFrequency = notes[notes.length-1].frequency * Math.pow(1.059463094359, 1);
+    newNote = new Note(nextName, nextOctave, nextFrequency);
+    notes.push(newNote);
   }
-  calcFreq(direction);
-  $("span.display.pitch").html(pitch.name);
-  $("span.display.octave").html(pitch.octave);
-  settings.keydir = null;
+  while ((notes[0].frequency * Math.pow(1.059463094359, -1)) >= settings.range.minimum) {
+    var nextName,
+        nextOctave,
+        nextFrequency;
+    switch (notes[0].name) {
+      case "A":
+        nextName = "G#";
+        nextOctave = notes[0].octave;
+        break;
+      case "Bb":
+        nextName = "A";
+        nextOctave = notes[0].octave;
+        break;
+      case "B":
+        nextName = "Bb";
+        nextOctave = notes[0].octave;
+        break;
+      case "C":
+        nextName = "B";
+        nextOctave = notes[0].octave - 1;
+        break;
+      case "C#":
+        nextName = "C";
+        nextOctave = notes[0].octave;
+        break;
+      case "D":
+        nextName = "C#";
+        nextOctave = notes[0].octave;
+        break;
+      case "D#":
+        nextName = "D";
+        nextOctave = notes[0].octave;
+        break;
+      case "E":
+        nextName = "D#";
+        nextOctave = notes[0].octave;
+        break;
+      case "F":
+        nextName = "E";
+        nextOctave = notes[0].octave;
+        break;
+      case "F#":
+        nextName = "F";
+        nextOctave = notes[0].octave;
+        break;
+      case "G":
+        nextName = "F#";
+        nextOctave = notes[0].octave;
+        break;
+      case "G#":
+        nextName = "G";
+        nextOctave = notes[0].octave;
+        break
+    }
+    nextFrequency = notes[0].frequency * Math.pow(1.059463094359, -1);
+    newNote = new Note(nextName, nextOctave, nextFrequency);
+    notes.unshift(newNote);
+  }
+  console.log(notes);
+  console.log(settings.notes[62])
 }
 
 function newOsc() {
@@ -102,6 +148,28 @@ function newOsc() {
   oscillator.connect(gainNode); // Connect bass guitar to boost pedal
   gainNode.connect(context.destination); // Connect boost pedal to amplifier
   gainNode.gain.value = 1; // Set boost pedal to 30 percent volume
+}
+
+function pitchChange(keydir) {
+  var pitch = settings.currentPitch;
+  switch (keydir) {
+    case "up":
+      if (settings.notes[settings.arrayPos.cur+1] !== undefined) {
+        settings.arrayPos.cur++;
+        settings.currentPitch = settings.notes[settings.arrayPos.cur];
+      }
+      break;
+    case "down":
+      if (settings.notes[settings.arrayPos.cur - 1] !== undefined) {
+        settings.arrayPos.cur--;
+        settings.currentPitch = settings.notes[settings.arrayPos.cur];
+      }
+      break;
+  }
+  oscillator.frequency.value = settings.currentPitch.frequency;
+  $("span.display.pitch").html(settings.currentPitch.name);
+  $("span.display.octave").html(settings.currentPitch.octave);
+  $("span.display.frequency").html(Math.round(settings.currentPitch.frequency) + "Hz");
 }
 
 function playPitch() {
@@ -129,21 +197,35 @@ function stopPitch() {
   $("button#play").show();
 }
 
+function resetPitch() {
+  settings.currentPitch = settings.userPitch;
+  settings.arrayPos.cur = settings.arrayPos.user;
+  oscillator.frequency.value = settings.currentPitch.frequency;
+  $("span.display.pitch").html(settings.currentPitch.name);
+  $("span.display.octave").html(settings.currentPitch.octave);
+  $("span.display.frequency").html(Math.round(settings.currentPitch.frequency) + "Hz");
+}
+
 function setUserDefault(definedPitch){
   if (definedPitch) {
   } else {
     console.log("Default set to: " + settings.currentPitch.name + settings.currentPitch.octave);
-    settings.userDef.name = settings.currentPitch.name;
-    settings.userDef.octave = settings.currentPitch.octave;
-    settings.userDef.frequency = settings.currentPitch.frequency;
+    settings.arrayPos.user = settings.arrayPos.cur;
+    settings.userPitch.name = settings.currentPitch.name;
+    settings.userPitch.octave = settings.currentPitch.octave;
+    settings.userPitch.frequency = settings.currentPitch.frequency;
   }
 }
 
 $(document).ready(function() {
 
+  createNoteFreqs();
+
   $("#play").on("click", playPitch);
   $("#stop").on("click", stopPitch);
-  $("#reset").on("click", function(){ calcFreq(null, true); });
+  $("#reset").on("click", function(){
+    resetPitch();
+  });
   $('#default').on("click", function(){
     setUserDefault();
   });
@@ -167,7 +249,7 @@ $(document).ready(function() {
     if (settings.isPlaying) stopPitch(); else playPitch();
   });
   Mousetrap.bind('shift', function(){
-    calcFreq(null, true);
+    resetPitch();
   });
 
   context = new (window.AudioContext || window.webkitAudioContext)();
