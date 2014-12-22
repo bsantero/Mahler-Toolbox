@@ -237,11 +237,11 @@ $(document).ready(function() {
   $("#droneDown").on("click", function(){
     pitchChange("down");
   });
-  Mousetrap.bind(['q','w','e','r','t','a','s','d','f','g','z','x','c','v'], function(){
+  Mousetrap.bind(['q','w','e','r','t','a','s','d','f','g','z','x','c','v', 'up'], function(){
     //settings.keydir = "up";
     pitchChange("up");
   });
-  Mousetrap.bind(['y','u','i','o','p','h','j','k','l','b','n','m'], function(){ 
+  Mousetrap.bind(['y','u','i','o','p','h','j','k','l','b','n','m', 'down'], function(){ 
     //settings.keydir = "down";
     pitchChange("down");
   });
