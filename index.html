@@ -5,15 +5,25 @@
   <link rel="stylesheet" type="text/css" href="css/style.css" />
   <link rel="stylesheet" type="text/css" href="css/reset.css" />
   <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"> -->
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 </head>
 
 <body>
-  <div class="container-fluid">
+  <div class="container-fluid clearfix">
     <div id="siteTitles" class="row">
+      <div class="btn-group fltright" role="group" aria-hidden="true">
+        <button id ="infoButton" type="button" class="btn btn-clear menuBtn btn-lg">
+          <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+        </button>
+        <button id ="settingsButton" type="button" class="btn btn-clear menuBtn btn-lg ">
+          <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+        </button>
+      </div>
       <h1 id="pageTitle">Mahler Box</h1>
       <h5 id="pageSubtitle">Toolbox for Musicians</h5>
+
     </div>
 
     <div id="navbar" class="hide row">
@@ -44,28 +54,33 @@
         <h1 class="vAlignCenter">Pitch Down</h1>
       </div>
     </div>
-
-    <div class="hide">
-      <h3>Keyboard Shortcuts:</h3>
-      <p>Start/Stop: Spacebar</p>
-      <p>Reset: Shift</p>
-      <p>Pitch Up: Left side of keyboard</p>
-      <p>Pitch Down: Right side of keyboard</p>
+    <div id="menus">
+      <div id="infoMenu" class="">
+        <h3>Keyboard Shortcuts:</h3>
+        <p>Start/Stop: Spacebar</p>
+        <p>Reset: Shift</p>
+        <p>Raise Pitch: Right side of keyboard</p>
+        <p>Lower Pitch: Left side of keyboard</p>
+      </div>
+      <div id="settingsMenu" class="">
+        <h3>Options</h3>
+        <p>Coming soon!</p>
+      </div>
     </div>
   </div>
 
-  <div id="footer" class="container">
+  <div id="footer" class="container-fluid">
       <nav class="navbar">
         <div class="navbar-inner navbar-content-center">
-          <p class="credit">Created by <a href="http://briansantero.com">Brian Santero</a></p>
+          <p class="credit">By <a href="http://briansantero.com">Brian Santero</a></p>
         </div>
       </nav>
   </div>
 
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-  <script src="./js/oscillator.js"></script>
-  <script src="./js/mousetrap.js"></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/oscillator.js"></script>
+  <script src="js/mousetrap.js"></script>
   <!-- Latest compiled and minified JavaScript -->
 </body>
 

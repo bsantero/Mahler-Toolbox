@@ -17,12 +17,59 @@ body {
   display: none;
 }
 
+.fltleft {
+  float: left;
+}
+
+.fltright {
+  float: right;
+}
+
 .vAlignCenter {
   position: relative;
   top: 50%;
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
+}
+
+.btn-group {
+  top: 0 !important;
+}
+
+.btn-clear {
+  background-color: #754B75 !important;
+  -webkit-transition-duration: 0.2s;
+  -moz-transition-duration: 0.2s;
+  transition-duration: 0.2s;
+}
+
+button:hover,
+button:active {
+  outline: none !important;
+}
+
+button:focus {
+  outline: 0 !important;
+}
+
+.menuBtn {
+  border-radius: 7px;
+}
+
+.menuBtn.clicked {
+  border-radius: 7px 7px 0 0;
+}
+
+.credit a {
+  -webkit-transition-duration: 0.3s;
+  -moz-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+}
+
+.credit a:hover, .credit a:focus {
+  font-size: 2rem;
+  color: #FFF !important;
 }
 
 #siteTitles {
@@ -32,18 +79,37 @@ body {
   margin: 1rem 0;
 }
 
+#pageTitle,
+#pageSubtitle {
+  float: left;
+  display: inline-block;
+  margin: 0;
+}
+
 #pageTitle {
-  display: inline;
   font-size: 3rem;
+  margin: 0 .5rem -1.26rem 0; 
 }
 
 #pageSubtitle {
-  display: inline;
   font-size: 1.5rem;
+  margin-top: 1.26rem;
 }
 
 #navbar ul li {
   display: inline;
+}
+
+#settingsMenu,
+#infoMenu {
+  display: none;
+  text-align: right;
+  padding: 0 1rem;
+  position: absolute;
+  top: 5.3rem;
+  right: 1.5rem;
+  border-radius: 7px 0 7px 7px;
+  background-color: #3B0F3B !important;
 }
 
 #droneUi {
@@ -51,7 +117,6 @@ body {
   -moz-user-select: none; /* mozilla browsers */
   -khtml-user-select: none; /* webkit (konqueror) browsers */
   -ms-user-select: none; /* IE10+ */
-
   text-align: center;
 }
 
@@ -114,16 +179,12 @@ body {
 }
 
 #droneDisplay button:hover,
-#droneDisplay button:focus {
+#droneDisplay button:focus,
+.btn-clear:hover,
+.btn-clear:focus {
   background-color: #3B0F3B !important;
-  outline: none;
+  color: white !important;
 }
-/*
-#droneDisplay button:active {
-  -webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
-  -moz-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
-  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
-}*/
 
 #droneDisplay div.controls {
   margin-bottom: 2rem;
@@ -137,23 +198,14 @@ body {
   margin: 1rem;
 }
 
-.credit a {
-  -webkit-transition-duration: 0.3s;
-  -moz-transition-duration: 0.3s;
-  transition-duration: 0.3s;
-}
-
-.credit a:hover, .credit a:focus {
-  font-size: 2rem;
-  color: #FFF !important;
-}
-
 @media (min-width: 768px) {
-    #droneDisplay,
-    #droneUp,
-    #droneDown {
-      height: 80vh;
-    }
+
+
+  #droneDisplay,
+  #droneUp,
+  #droneDown {
+    height: 80vh;
+  }
 
   #droneDisplay {
     border-top: none;
@@ -199,16 +251,21 @@ body {
 
 @media (max-width: 768px) and (orientation: landscape){
   
-#droneDisplay span {
-  font-size: 5rem;
-}
+  #pageSubtitle {
+    margin: 0;
+  }
 
-#droneDisplay span.octave {
-  font-size: 3rem;
-}
+  #droneDisplay span {
+    font-size: 5rem;
+  }
 
-#droneDisplay span.frequency {
-  font-size: 3rem;
-}
+  #droneDisplay span.octave,
+  #droneDisplay span.frequency {
+    font-size: 3rem;
+  }
+
+  #droneDisplay button {
+    margin: 1rem;
+  }
 
 }
