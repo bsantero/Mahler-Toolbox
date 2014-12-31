@@ -7,10 +7,31 @@ body {
   padding:0; 
   background-color: #5E345E !important;
   color: white !important;
+  -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+  -moz-user-select: none; /* mozilla browsers */
+  -khtml-user-select: none; /* webkit (konqueror) browsers */
+  -ms-user-select: none; /* IE10+ */
+}
+
+button {
+  color: white !important;
+}
+
+button:hover,
+button:active {
+  outline: none !important;
+}
+
+button:focus {
+  outline: 0 !important;
 }
 
 .container {
   width: 100%;
+}
+
+.glyphicon:hover {
+  cursor: pointer;
 }
 
 .hide {
@@ -44,21 +65,20 @@ body {
   transition-duration: 0.2s;
 }
 
-button:hover,
-button:active {
-  outline: none !important;
+.btn-group button.menuBtn {
+  transition-duration: 0s;
 }
 
-button:focus {
-  outline: 0 !important;
+.btn-group button.menuBtn.clicked {
+  background-color: #3B0F3B !important;
 }
 
-.menuBtn {
-  border-radius: 7px;
+.btn-group button.menuBtn:first-child.clicked {
+  border-bottom-left-radius: 0;
 }
 
-.menuBtn.clicked {
-  border-radius: 7px 7px 0 0;
+.btn-group button.menuBtn:last-child.clicked {
+  border-bottom-right-radius: 0;
 }
 
 .credit a {
@@ -69,7 +89,7 @@ button:focus {
 
 .credit a:hover, .credit a:focus {
   font-size: 2rem;
-  color: #FFF !important;
+  color: white !important;
 }
 
 #siteTitles {
@@ -103,20 +123,24 @@ button:focus {
 #settingsMenu,
 #infoMenu {
   display: none;
-  text-align: right;
   padding: 0 1rem;
   position: absolute;
-  top: 5.3rem;
+  top: 5.5rem;
   right: 1.5rem;
   border-radius: 7px 0 7px 7px;
   background-color: #3B0F3B !important;
 }
 
+#infoMenu {
+  text-align: right;
+}
+
+#settingsMenu {
+  text-align: center;
+  padding-bottom: 1rem;
+}
+
 #droneUi {
-  -webkit-user-select: none; /* webkit (safari, chrome) browsers */
-  -moz-user-select: none; /* mozilla browsers */
-  -khtml-user-select: none; /* webkit (konqueror) browsers */
-  -ms-user-select: none; /* IE10+ */
   text-align: center;
 }
 
@@ -179,11 +203,8 @@ button:focus {
 }
 
 #droneDisplay button:hover,
-#droneDisplay button:focus,
-.btn-clear:hover,
-.btn-clear:focus {
+#droneDisplay button:focus {
   background-color: #3B0F3B !important;
-  color: white !important;
 }
 
 #droneDisplay div.controls {

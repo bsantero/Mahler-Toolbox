@@ -1,29 +1,57 @@
 var settings = {};
-settings.arrayPos = {"cur":36, "user":36};
+settings.arrayPos = {"cur":36, "user":36, "def":36, "A4": null};
+settings.basePitch = {"name": "A", "octave": 4, "frequency": 440};
 settings.currentPitch = {"name": "A", "octave": 4, "frequency": 440};
-settings.userPitch = {"name": "A", "octave": 4, "frequency": 440};
-settings.defaultPitch = {"name": "A", "octave": 4, "frequency": 440};
+settings.userPitch = {"name": "A", "octave": 4, "frequency": 440, "calibration": 440};
 settings.isPlaying = false;
 settings.notes = [];
-settings.range = {"minimum": 54, "maximum": 1761};
-//settings.keydir = null;
+settings.range = {"minimum": "A1", "maximum": "A6"};
+settings.volume = 18;
 
-function Note(name, octave, frequency) {
+function Note(name, octave) {
   this.name = name;
   this.octave = octave;
-  this.frequency = frequency;
 }
 
-function createNoteFreqs() {
+function findBasePitch() {
+  var base = (settings.basePitch.name + settings.basePitch.octave.toString())
+  for (var i = settings.notes.length - 1; i >= 0; i--) {
+    if ((settings.notes[i].name + settings.notes[i].octave.toString()) == base) {
+      settings.arrayPos[(settings.notes[i].name + settings.notes[i].octave.toString())] = i;
+      //console.log(base + " is at: "+ settings.arrayPos[base]);
+    }
+  }
+}
+
+function calibratePitch(caldir) {
+  // alert(settings.arrayPos.cur);
+  if (!settings.userPitch.calibration) {
+    settings.userPitch.calibration = settings.basePitch.frequency;
+  }
+  if (caldir === "up" && settings.userPitch.calibration < 452) {
+    settings.userPitch.calibration++;
+  } else if (caldir === "down" && settings.userPitch.calibration > 415) {
+    settings.userPitch.calibration--;
+  }
+  //console.log("Base freq " + caldir + " to: " + settings.userPitch.calibration);
+  $("#calibrateDisplay").html(settings.userPitch.calibration + "Hz");
+  setNoteArrayFreqs();
+  //console.log("Pos 36 is: "+settings.notes[36].frequency);
+  $("span.display.frequency").html(Math.round(settings.notes[settings.arrayPos.cur].frequency) + "Hz");
+  oscillator.frequency.value = settings.notes[settings.arrayPos.cur].frequency;
+}
+
+function createNoteNames() {
+  settings.notes = [];
   var base = settings.currentPitch,
       notes = settings.notes,
-      newNote;
-  newNote = new Note(base.name, base.octave, base.frequency);
-  //console.log(newNote);
-  notes.push(newNote);
-  //console.log(notes.length);
-  while ((notes[notes.length-1].frequency * Math.pow(1.059463094359, 1)) <= settings.range.maximum) {
-    var nextName,
+      baseNote;
+  //console.log("calib is "+settings.userPitch.calibration);
+  baseNote = new Note(base.name, base.octave);
+  notes.push(baseNote);
+  while ((notes[notes.length-1].name + notes[notes.length-1].octave.toString()) != settings.range.maximum) {
+    var higherNote,
+        nextName,
         nextOctave,
         nextFrequency;
     switch (notes[notes.length-1].name) {
@@ -76,70 +104,85 @@ function createNoteFreqs() {
         nextOctave = notes[notes.length-1].octave;
         break
     }
-    nextFrequency = notes[notes.length-1].frequency * Math.pow(1.059463094359, 1);
-    newNote = new Note(nextName, nextOctave, nextFrequency);
-    notes.push(newNote);
+    higherNote = new Note(nextName, nextOctave);
+    notes.push(higherNote);
   }
-  while ((notes[0].frequency * Math.pow(1.059463094359, -1)) >= settings.range.minimum) {
-    var nextName,
-        nextOctave,
-        nextFrequency;
+  while ((notes[0].name + notes[0].octave.toString()) != settings.range.minimum) {
+    var lowerNote,
+        nextNameDown,
+        nextOctaveDown,
+        nextFrequencyDown;
     switch (notes[0].name) {
       case "A":
-        nextName = "G#";
-        nextOctave = notes[0].octave;
+        nextNameDown = "G#";
+        nextOctaveDown = notes[0].octave;
         break;
       case "Bb":
-        nextName = "A";
-        nextOctave = notes[0].octave;
+        nextNameDown = "A";
+        nextOctaveDown = notes[0].octave;
         break;
       case "B":
-        nextName = "Bb";
-        nextOctave = notes[0].octave;
+        nextNameDown = "Bb";
+        nextOctaveDown = notes[0].octave;
         break;
       case "C":
-        nextName = "B";
-        nextOctave = notes[0].octave - 1;
+        nextNameDown = "B";
+        nextOctaveDown = notes[0].octave - 1;
         break;
       case "C#":
-        nextName = "C";
-        nextOctave = notes[0].octave;
+        nextNameDown = "C";
+        nextOctaveDown = notes[0].octave;
         break;
       case "D":
-        nextName = "C#";
-        nextOctave = notes[0].octave;
+        nextNameDown = "C#";
+        nextOctaveDown = notes[0].octave;
         break;
       case "D#":
-        nextName = "D";
-        nextOctave = notes[0].octave;
+        nextNameDown = "D";
+        nextOctaveDown = notes[0].octave;
         break;
       case "E":
-        nextName = "D#";
-        nextOctave = notes[0].octave;
+        nextNameDown = "D#";
+        nextOctaveDown = notes[0].octave;
         break;
       case "F":
-        nextName = "E";
-        nextOctave = notes[0].octave;
+        nextNameDown = "E";
+        nextOctaveDown = notes[0].octave;
         break;
       case "F#":
-        nextName = "F";
-        nextOctave = notes[0].octave;
+        nextNameDown = "F";
+        nextOctaveDown = notes[0].octave;
         break;
       case "G":
-        nextName = "F#";
-        nextOctave = notes[0].octave;
+        nextNameDown = "F#";
+        nextOctaveDown = notes[0].octave;
         break;
       case "G#":
-        nextName = "G";
-        nextOctave = notes[0].octave;
-        break
+        nextNameDown = "G";
+        nextOctaveDown = notes[0].octave;
+        break;
     }
-    nextFrequency = notes[0].frequency * Math.pow(1.059463094359, -1);
-    newNote = new Note(nextName, nextOctave, nextFrequency);
-    notes.unshift(newNote);
+    lowerNote = new Note(nextNameDown, nextOctaveDown);
+    notes.unshift(lowerNote);
   }
-  console.log(notes);
-  console.log(settings.notes[62])
+  for (i = settings.notes.length - 1; i >= 0; i--) {
+    //console.log(settings.notes[i]);
+  }
+  //console.log(notes.length);
+}
+
+function setNoteArrayFreqs() {
+  // var notes = settings.notes;
+  settings.notes[settings.arrayPos.A4].frequency = settings.userPitch.calibration;
+  for (var i = settings.arrayPos.A4 + 1; i < settings.notes.length; i++) {
+    settings.notes[i].frequency = settings.notes[i-1].frequency * Math.pow(1.059463094359, 1);
+  }
+  for (i = settings.arrayPos.A4 - 1; i >= 0; i--) {
+    settings.notes[i].frequency = settings.notes[i+1].frequency * Math.pow(1.059463094359, -1);
+  }
+  for (i = settings.notes.length - 1; i >= 0; i--) {
+    //console.log(settings.notes[i]);
+  }
 }
 
 function newOsc() {
@@ -147,14 +190,14 @@ function newOsc() {
   gainNode = context.createGain(); // Create boost pedal 
   oscillator.connect(gainNode); // Connect bass guitar to boost pedal
   gainNode.connect(context.destination); // Connect boost pedal to amplifier
-  gainNode.gain.value = 1; // Set boost pedal to 30 percent volume
+  gainNode.gain.value = settings.volume/24; // Set boost pedal to 30 percent volume
 }
 
 function pitchChange(keydir) {
   var pitch = settings.currentPitch;
   switch (keydir) {
     case "up":
-      if (settings.notes[settings.arrayPos.cur+1] !== undefined) {
+      if (settings.notes[settings.arrayPos.cur + 1] !== undefined) {
         settings.arrayPos.cur++;
         settings.currentPitch = settings.notes[settings.arrayPos.cur];
       }
@@ -174,7 +217,7 @@ function pitchChange(keydir) {
 
 function playPitch() {
   newOsc();
-  console.log("playing "+settings.currentPitch.frequency);
+  //console.log("playing "+settings.currentPitch.frequency);
   oscillator.frequency.value = settings.currentPitch.frequency;
   if (window.AudioContext) {
     oscillator.start();
@@ -209,7 +252,7 @@ function resetPitch() {
 function setUserDefault(definedPitch){
   if (definedPitch) {
   } else {
-    console.log("Default set to: " + settings.currentPitch.name + settings.currentPitch.octave);
+    //console.log("Default set to: " + settings.currentPitch.name + settings.currentPitch.octave);
     settings.arrayPos.user = settings.arrayPos.cur;
     settings.userPitch.name = settings.currentPitch.name;
     settings.userPitch.octave = settings.currentPitch.octave;
@@ -217,19 +260,64 @@ function setUserDefault(definedPitch){
   }
 }
 
+function menuBtnPress(menu) {
+  $("#"+menu+"Menu").siblings().hide();
+  $("#"+menu+"Button").toggleClass("clicked");
+  $("#"+menu+"Menu").toggle();
+}
+
+function volumeChange(voldir) {
+  if (voldir === "up" && settings.volume !== 24) {
+    settings.volume++;
+    //console.log("Volume " + voldir + ", current: " + settings.volume);
+    gainNode.gain.value = settings.volume/24; // Set boost pedal to 30 percent volume
+  } else if (voldir === "down" && settings.volume !== 0) {
+    settings.volume--;
+    //console.log("Volume " + voldir + ", current: " + settings.volume);
+    gainNode.gain.value = settings.volume/24; // Set boost pedal to 30 percent volume
+  }
+}
 $(document).ready(function() {
 
-  createNoteFreqs();
+  createNoteNames();
+  findBasePitch();
+  setNoteArrayFreqs();
 
-  $("#play").on("click", playPitch);
-  $("#stop").on("click", stopPitch);
+  $("#play").on("click", function(){
+    playPitch();
+    this.blur();
+  });
+  $("#stop").on("click", function(){
+    stopPitch();
+    this.blur();
+  });
+  $("#default").on("click", function(){
+    setUserDefault();
+    this.blur();
+  });
   $("#reset").on("click", function(){
     resetPitch();
-  });
-  $('#default').on("click", function(){
-    setUserDefault();
+    this.blur();
   });
 
+  $("#infoButton").on("click", function(){
+    menuBtnPress("info");
+  });
+  $("#settingsButton").on("click", function(){
+    menuBtnPress("settings");
+  });
+  $("#volMinus").on("click", function(){
+    volumeChange("down");
+  });
+  $("#volPlus").on("click", function(){
+    volumeChange("up");
+  });
+  $("#calibrateDown").on("click", function(){
+    calibratePitch("down");
+  });
+  $("#calibrateUp").on("click", function(){
+    calibratePitch("up");
+  });
 
   $("#droneUp").on("click", function(){
     pitchChange("up");
@@ -237,13 +325,18 @@ $(document).ready(function() {
   $("#droneDown").on("click", function(){
     pitchChange("down");
   });
-  Mousetrap.bind(['q','w','e','r','t','a','s','d','f','g','z','x','c','v', 'up'], function(){
-    //settings.keydir = "up";
+
+  Mousetrap.bind(['q','w','e','r','t','a','s','d','f','g','z','x','c','v', 'down'], function(){
+    pitchChange("down");
+  });
+  Mousetrap.bind(['y','u','i','o','p','h','j','k','l','b','n','m', 'up'], function(){ 
     pitchChange("up");
   });
-  Mousetrap.bind(['y','u','i','o','p','h','j','k','l','b','n','m', 'down'], function(){ 
-    //settings.keydir = "down";
-    pitchChange("down");
+  Mousetrap.bind('left', function(){ 
+    calibratePitch("down");
+  });
+  Mousetrap.bind('right', function(){ 
+    calibratePitch("up");
   });
   Mousetrap.bind('space', function(){
     if (settings.isPlaying) stopPitch(); else playPitch();
@@ -256,5 +349,5 @@ $(document).ready(function() {
 
   newOsc();
 
-
+  $("#settingsMenu").show()
 });
