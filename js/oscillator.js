@@ -262,6 +262,7 @@ function setUserDefault(definedPitch){
 
 function menuBtnPress(menu) {
   $("#"+menu+"Menu").siblings().hide();
+  $("#"+menu+"Button").siblings().removeClass("clicked");
   $("#"+menu+"Button").toggleClass("clicked");
   $("#"+menu+"Menu").toggle();
 }
@@ -276,7 +277,9 @@ function volumeChange(voldir) {
     //console.log("Volume " + voldir + ", current: " + settings.volume);
     gainNode.gain.value = settings.volume/24; // Set boost pedal to 30 percent volume
   }
+  $("#volDisplay").html(Math.round(settings.volume/24*100)+"%");
 }
+
 $(document).ready(function() {
 
   createNoteNames();
@@ -332,6 +335,12 @@ $(document).ready(function() {
   Mousetrap.bind(['y','u','i','o','p','h','j','k','l','b','n','m', 'up'], function(){ 
     pitchChange("up");
   });
+  Mousetrap.bind('-', function(){
+    volumeChange("down");
+  });
+  Mousetrap.bind('=', function(){
+    volumeChange("up");
+  });
   Mousetrap.bind('left', function(){ 
     calibratePitch("down");
   });
@@ -349,5 +358,5 @@ $(document).ready(function() {
 
   newOsc();
 
-  $("#settingsMenu").show()
+  // $("#settingsMenu").show()
 });
