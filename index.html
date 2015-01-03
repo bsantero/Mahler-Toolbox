@@ -28,7 +28,7 @@
     <div id="navbar" class="navbar row">
       <span id="droneHeading" class="currentInterfaceHeading"><p class="clickable" data-interface="drone">Drones</p></span>
       <span id="gnomeHeading"><p class="clickable" data-interface="gnome">Gnome</p></span>
-      <span id="quencherHeading"><p class="clickable" data-interface="quencher">Quencher</p></span>
+      <!-- <span id="quencherHeading"><p class="clickable" data-interface="quencher">Quencher</p></span> -->
     </div>
     
     <div id="interfaces">
@@ -96,11 +96,16 @@
           </div>
         </div>
         <div id="gnomeDisplay" class="nopad col-sm-12">
-          <div class="blinky"></div>
-          <div class="tempo-dial">
+          <div id="gnomeTempoKnob" class="tempo-dial">
             <h4>Tempo</h4><input class="knob option input" value="120" data-angleOffset=-125 data-angleArc=250 data-option="colInterval">
           </div>
-          <div class="vertical-center">
+          <select id="subdivisionSelector">
+            <option>Half</option>
+            <option selected="selected">Quarter</option>
+            <option>Eighth</option>
+            <option>Sixteenth</option>
+          </select>
+          <div class="">
             <div class="controls">
               <button id="gnomePlay" class="ctlButton" data-dest='{"ui":"gnome", "action":"Play"}'>play</button>
               <button id="gnomeStop" class="ctlButton" data-dest='{"ui":"gnome", "action":"Stop"}'>stop</button>

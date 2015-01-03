@@ -66,6 +66,9 @@ $(document).ready(function() {
   //Create Gnome.js elements
   gnomeInit();
 
+  selectInterface("gnome");
+
+
   //Create our event handlers
   $("#navbar .clickable").on("click", selectInterface);
 
@@ -97,17 +100,21 @@ $(document).ready(function() {
     pitchChange("down");
   });
 
+  $("#subdivisionSelector").change(function(){
+  	gnome.subdivision.selected = $(this).val();
+  });
+
   //Create keyboard shortcut event handlers
   var listener = new window.keypress.Listener();
 
-  listener.simple_combo('1', function() {
+  listener.simple_combo('alt 1', function() {
     selectInterface("drone");
   });
-  listener.simple_combo('2', function() {
+  listener.simple_combo('alt 2', function() {
     selectInterface("gnome");
   });
-  listener.simple_combo('3', function() {
-    selectInterface("quencher");
+  listener.simple_combo('alt 3', function() {
+    //selectInterface("quencher");
   });
   listener.simple_combo('[', function() {
     menuBtnPress("Info");
