@@ -26,32 +26,28 @@ button:focus {
   outline: 0 !important;
 }
 
-.container {
-  width: 100%;
+button.ctlButton {
+  width: 20vw;
+  margin: 0 1rem;
+  padding: 1rem;
+  /*font-size: 2rem;*/
+  background-color: #754B75 !important;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+  border: none;
+  -webkit-transition-duration: 0.2s;
+  -moz-transition-duration: 0.2s;
+  transition-duration: 0.2s;
 }
 
-.glyphicon:hover {
-  cursor: pointer;
+button.ctlButton:hover,
+button.ctlButton:focus {
+  background-color: #3B0F3B !important;
 }
 
-.hide {
-  display: none;
-}
-
-.fltleft {
-  float: left;
-}
-
-.fltright {
-  float: right;
-}
-
-.vAlignCenter {
-  position: relative;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
+.blinkyOn {
+  opacity: 1 !important;
 }
 
 .btn-group {
@@ -59,14 +55,16 @@ button:focus {
 }
 
 .btn-clear {
-  background-color: #754B75 !important;
+  background-color: #754B75 !important;/*
   -webkit-transition-duration: 0.2s;
   -moz-transition-duration: 0.2s;
-  transition-duration: 0.2s;
+  transition-duration: 0.2s;*/
 }
 
 .btn-group button.menuBtn {
-  transition-duration: 0s;
+  -webkit-transition-duration: 0.25s;
+  -moz-transition-duration: 0.25s;
+  transition-duration: 0.25s;
 }
 
 .btn-group button.menuBtn.clicked {
@@ -90,6 +88,66 @@ button:focus {
 .credit a:hover, .credit a:focus {
   font-size: 2rem;
   color: white !important;
+}
+
+.container {
+  width: 100%;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.fltleft {
+  float: left;
+}
+
+.fltright {
+  float: right;
+}
+
+.glyphicon:hover {
+  cursor: pointer;
+}
+
+.hide {
+  display: none;
+}
+
+.keyButton {
+  /*float: right;*/
+  border: 1px solid white;
+  border-radius: 3px;
+  padding: 4px;
+  margin: auto 2px; 
+}
+
+.menu {
+  display: none;
+  padding: 0 1rem;
+  position: absolute;
+  top: 5.5rem;
+  right: 1.5rem;
+  border-radius: 7px 0 7px 7px;
+  background-color: #3B0F3B !important;
+  z-index: 10;
+}
+
+.infoMenu {
+  text-align: right;
+}
+
+.settingsMenu {
+  text-align: center;
+  padding-bottom: 1rem;
+}
+
+.vertical-center {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 #siteTitles {
@@ -116,37 +174,40 @@ button:focus {
   margin-top: 1.26rem;
 }
 
-#navbar ul li {
-  display: inline;
-}
-
-#settingsMenu,
-#infoMenu {
-  display: none;
-  padding: 0 1rem;
-  position: absolute;
-  top: 5.5rem;
-  right: 1.5rem;
-  border-radius: 7px 0 7px 7px;
-  background-color: #3B0F3B !important;
-}
-
-#infoMenu {
-  text-align: right;
-}
-
-#settingsMenu {
+#navbar {
   text-align: center;
-  padding-bottom: 1rem;
 }
 
-#droneUi {
+#navbar span {
+  width: 25vw;
+  display: inline-block;
+  font-size: 3rem;
+  color: rgb(160,160,160);
+}
+
+#navbar span.currentInterfaceHeading {
+  color: white;
+}
+
+#navbar span:nth-child(2) {
+  border-left: 3px solid #754B75;
+  border-right: 3px solid #754B75;
+}
+#gnomeUi,
+#gnomeUi,
+#quencherUi {
+  display: none;
+}
+
+#droneUi,
+#gnomeUi,
+#quencherUi {
   text-align: center;
 }
 
 #droneUp,
 #droneDown {
-  height: 25vh;
+  height: 15vh;
 }
 
 #droneUp h1,
@@ -164,7 +225,7 @@ button:focus {
 }
 
 #droneDisplay {
-  height: 35vh;
+  height: 30vh;
   border-top: 3px solid #754B75;
   border-bottom: 3px solid #754B75;
 }
@@ -187,31 +248,27 @@ button:focus {
   font-size: 5rem;
 }
 
-#droneDisplay button {
-  width: 20vw;
-  margin: 0 1rem;
-  padding: 1rem;
-  /*font-size: 2rem;*/
-  background-color: #754B75 !important;
-  -webkit-border-radius: 7px;
-  -moz-border-radius: 7px;
-  border-radius: 7px;
-  border: none;
-  -webkit-transition-duration: 0.2s;
-  -moz-transition-duration: 0.2s;
-  transition-duration: 0.2s;
-}
-
-#droneDisplay button:hover,
-#droneDisplay button:focus {
-  background-color: #3B0F3B !important;
-}
-
 #droneDisplay div.controls {
   margin-bottom: 2rem;
 }
 
-#stop {
+#droneStop {
+  display: none;
+}
+
+#gnomeUi div.blinky {
+  width: 5vw;
+  height: 5vw;
+  text-align: center;
+  background-color: white;
+  -wekbit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  border-radius: 100%;
+  margin: auto;
+  opacity: 0;
+}
+
+#gnomeStop {
   display: none;
 }
 
@@ -221,11 +278,10 @@ button:focus {
 
 @media (min-width: 768px) {
 
-
   #droneDisplay,
   #droneUp,
   #droneDown {
-    height: 80vh;
+    height: 70vh;
   }
 
   #droneDisplay {
@@ -249,7 +305,7 @@ button:focus {
   #droneDisplay,
   #droneUp,
   #droneDown {
-    height: 80vh;
+    height: 70vh;
   }
 
   .col-sm-4 {
@@ -270,10 +326,18 @@ button:focus {
 
 }
 
-@media (max-width: 768px) and (orientation: landscape){
+@media (max-width: 768px){
+  body {
+    font-size: 10px;
+  }
   
   #pageSubtitle {
-    margin: 0;
+    /*margin: 0;*/
+  }
+
+  #navbar span {
+    width: 32vw;
+    font-size: 2rem;
   }
 
   #droneDisplay span {

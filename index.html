@@ -14,68 +14,125 @@
   <div class="container-fluid clearfix">
     <div id="siteTitles" class="row">
       <div class="btn-group fltright" role="group" aria-hidden="true">
-        <button id ="infoButton" type="button" class="btn btn-clear menuBtn btn-lg">
+        <button id="InfoButton" type="button" class="btn btn-clear menuBtn btn-lg">
           <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
         </button>
-        <button id ="settingsButton" type="button" class="btn btn-clear menuBtn btn-lg ">
+        <button id="SettingsButton" type="button" class="btn btn-clear menuBtn btn-lg ">
           <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
         </button>
       </div>
       <h1 id="pageTitle">Mahler Box</h1>
       <h5 id="pageSubtitle">Toolbox for Musicians</h5>
-
     </div>
 
-    <div id="navbar" class="hide row">
-      <ul>
-        <li>Drones</li>
-        <li>Metronome</li>
-      </ul>
+    <div id="navbar" class="navbar row">
+      <span id="droneHeading" class="currentInterfaceHeading"><p class="clickable" data-interface="drone">Drones</p></span>
+      <span id="gnomeHeading"><p class="clickable" data-interface="gnome">Gnome</p></span>
+      <span id="quencherHeading"><p class="clickable" data-interface="quencher">Quencher</p></span>
     </div>
-
-    <div id="droneUi" class="row">
-      <div id="droneUp" class="changePitch buttonDiv up col-sm-4 col-sm-push-8" data-direction="up">
-        <h1 class="vAlignCenter">Pitch Up</h1>
+    
+    <div id="interfaces">
+      <div id="droneUi" class="row">
+        <div id="droneMenus" class="menuContainer">
+          <div id="droneInfoMenu" class="menu infoMenu">
+            <h3>Drone Keyboard Shortcuts:</h3>
+            <p><span class="pull-left">Start/Stop:</span><span class="keyButton">Spacebar<span></p>
+            <p><span class="pull-left">Reset:</span><span class="keyButton">Shift</span></p>
+            <p><span class="pull-left">Volume:</span><span class="keyButton">-</span> | <span class="keyButton">+</span> keys</p>
+            <p><span class="pull-left">Pitch:</span><span class="keyButton">Arrow DOWN</span> | <span class="keyButton"> Arrow UP </span></p>
+            <p><span class="pull-left">Calibration:</span><span class="keyButton">Arrow LEFT</span> | <span class="keyButton">Arrow RIGHT</span></p>
+          </div>
+          <div id="droneSettingsMenu" class="menu settingsMenu">
+            <h3>Drone Settings</h3>
+            <div id="droneVolControl">
+                <span class="pull-left">Volume:</span>
+                <span id="droneVolMinus" class="glyphicon glyphicon-minus keyButton" aria-hidden="true"></span>
+                <span id="droneVolDisplay">75%</span>
+                <span id="droneVolPlus" class="glyphicon glyphicon-plus keyButton" aria-hidden="true"></span>
+            </div>
+            <div id="pitchCalibrate">
+                <span class="pull-left">Calibration:</span>
+                <span id="calibrateDown" class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                <span id="calibrateDisplay">440Hz</span>
+                <span id="calibrateUp" class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+        <div id="droneUp" class="changePitch buttonDiv up col-sm-4 col-sm-push-8" data-direction="up">
+          <h1 class="vertical-center">Pitch Up</h1>
+        </div>
+        <div id="droneDisplay" class="nopad col-sm-4">
+          <div class="vertical-center">
+            <span class="display pitch">A</span>
+            <span class="display octave">4</span>
+            <span class="display frequency">440Hz</span>
+            <div class="controls">
+              <button id="dronePlay" class="ctlButton" data-dest='{"ui":"drone", "action":"Play"}'>play</button>
+              <button id="droneStop" class="ctlButton" data-dest='{"ui":"drone", "action":"Stop"}'>stop</button>
+              <button id="droneDefault" class="ctlButton" data-dest='{"ui":"drone", "action":"Default"}'>default</button>
+              <button id="droneReset" class="ctlButton" data-dest='{"ui":"drone", "action":"Reset"}'>reset</button>
+            </div>
+          </div>
+        </div>
+        <div id="droneDown" class="changePitch buttonDiv down col-sm-4 col-sm-pull-8" data-direction="down">
+          <h1 class="vertical-center">Pitch Down</h1>
+        </div>
       </div>
-      <div id="droneDisplay" class="nopad col-sm-4">
-        <div class="vAlignCenter">
-          <span class="display pitch">A</span>
-          <span class="display octave">4</span>
-          <span class="display frequency">440Hz</span>
-          <div class="controls">
-            <button id="play">play</button>
-            <button id="stop">stop</button>
-            <button id="default">default</button>
-            <button id="reset">reset</button>
+
+      <div id="gnomeUi" class="row">
+        <div id="gnomeMenus" class="menuContainer">
+          <div id="gnomeInfoMenu" class="menu infoMenu">
+            <h3>Gnome Info</h3>
+            <p>Nothing yet!</p>
+          </div>
+          <div id="gnomeSettingsMenu" class="menu settingsMenu">
+            <h3>Gnome Settings</h3>
+            <div id="gnomeVolControl">
+              <p>Volume</p>
+              <span id="gnomeVolMinus" class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+              <span id="gnomeVolDisplay">75%</span>
+              <span id="gnomeVolPlus" class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+        <div id="gnomeDisplay" class="nopad col-sm-12">
+          <div class="blinky"></div>
+          <div class="tempo-dial">
+            <h4>Tempo</h4><input class="knob option input" value="120" data-angleOffset=-125 data-angleArc=250 data-option="colInterval">
+          </div>
+          <div class="vertical-center">
+            <div class="controls">
+              <button id="gnomePlay" class="ctlButton" data-dest='{"ui":"gnome", "action":"Play"}'>play</button>
+              <button id="gnomeStop" class="ctlButton" data-dest='{"ui":"gnome", "action":"Stop"}'>stop</button>
+            </div>
           </div>
         </div>
       </div>
-      <div id="droneDown" class="changePitch buttonDiv down col-sm-4 col-sm-pull-8" data-direction="down">
-        <h1 class="vAlignCenter">Pitch Down</h1>
-      </div>
-    </div>
-    <div id="menus">
-      <div id="infoMenu" class="">
-        <h3>Keyboard Shortcuts:</h3>
-        <p>Start/Stop: Spacebar</p>
-        <p>Reset: Shift</p>
-        <p>Volume: - | + keys</p>
-        <p>Pitch: Arrow DOWN | Arrow UP</p>
-        <p>Calibration: Arrow LEFT | Arrow RIGHT</p>
-      </div>
-      <div id="settingsMenu" class="">
-        <h3>Options</h3>
-        <div id="volControl">
-          <p>Volume</p>
-          <span id="volMinus" class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-          <span id="volDisplay">18/24</span>
-          <span id="volPlus" class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+
+      <div id="quencherUi" class="row">
+        <div id="quencherMenus" class="menuContainer">
+          <div id="quencherInfoMenu" class="menu infoMenu">
+            <h3>Quencher Info</h3>
+            <p>Nothing yet!</p>
+          </div>
+          <div id="quencherSettingsMenu" class="menu settingsMenu">
+            <h3>Quencher Settings</h3>
+            <div id="quencherVolControl">
+              <p>Volume</p>
+              <span id="quencherVolMinus" class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+              <span id="quencherVolDisplay">75%</span>
+              <span id="quencherVolPlus" class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </div>
+          </div>
         </div>
-        <div id="pitchCalibrate">
-          <p>Calibration</p>
-          <span id="calibrateDown" class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-          <span id="calibrateDisplay">440Hz</span>
-          <span id="calibrateUp" class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        <div id="quencherDisplay" class="nopad col-sm-12">
+          <div class="vertical-center">
+            <span class="display frequency">60 bpm</span>
+            <div class="controls">
+              <button id="quencherPlay" class="ctlButton" data-dest='{"ui":"quencher", "action":"play"}'>play</button>
+              <button id="quencherStop" class="ctlButton" data-dest='{"ui":"quencher", "action":"stop"}'>stop</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -91,9 +148,14 @@
 
   <script src="js/jquery.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
-  <script src="js/oscillator.js"></script>
-  <script src="js/mousetrap.js"></script>
-  <!-- Latest compiled and minified JavaScript -->
+  
+  <script src="js/keypress-2.1.0.min.js"></script>
+  <script src="js/jquery.knob.min.js"></script>
+
+  <script src="js/drone.js"></script>
+  <script src="js/gnome.js"></script>
+  <script src="js/interface.js"></script>
+  <script src="js/metronomeworker.js"></script>
 </body>
 
 </html>
