@@ -66,8 +66,7 @@ $(document).ready(function() {
   //Create Gnome.js elements
   gnomeInit();
 
-  selectInterface("gnome");
-
+  // selectInterface("gnome");
 
   //Create our event handlers
   $("#navbar .clickable").on("click", selectInterface);
