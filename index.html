@@ -11,6 +11,16 @@
 </head>
 
 <body>
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PQL95N"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-PQL95N');</script>
+<!-- End Google Tag Manager -->
+
   <div class="container-fluid clearfix">
     <div id="siteTitles" class="row">
       <div class="btn-group fltright" role="group" aria-hidden="true">
@@ -95,9 +105,20 @@
             </div>
           </div>
         </div>
-        <div id="gnomeDisplay" class="nopad col-sm-12">
+
+        <div id="gnomeUp" class="tempoChange col-xs-6">
+          <h3 class="">Up</h3>
+          <button id="gnomePlusOne" class="ctlButton" data-dest='{"ui":"gnome", "action":"tempoChange", "amount":"1"}'>+1</button>
+          <button id="gnomePlusTen" class="ctlButton" data-dest='{"ui":"gnome", "action":"tempoChange", "amount":"10"}'>+10</button>
+        </div>
+        <div id="gnomeDown" class="tempoChange col-xs-6">
+          <h3 class="">Down</h3>
+          <button id="gnomeMinusOne" class="ctlButton" data-dest='{"ui":"gnome", "action":"tempoChange", "amount":"-1"}'>-1</button>
+          <button id="gnomeMinusTen" class="ctlButton" data-dest='{"ui":"gnome", "action":"tempoChange", "amount":"-10"}'>-10</button>
+        </div>
+        <div id="gnomeDisplay" class="nopad col-sm-4">
           <div id="gnomeTempoKnob" class="tempo-dial">
-            <h4>Tempo</h4><input class="knob option input" value="120" data-angleOffset=-125 data-angleArc=250 data-option="colInterval">
+            <h1>Tempo</h1><input class="knob option input" value="120" data-linecap=round>
           </div>
           <select id="subdivisionSelector">
             <option>Half</option>

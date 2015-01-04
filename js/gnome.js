@@ -1,5 +1,6 @@
 gnome.isPlaying = false;
 gnome.startTime = null;
+gnome.oscVol = 18;
 gnome.tempo = 120.0;
 gnome.lookahead = 25.0;
 gnome.scheduleAheadTime = 0.1;
@@ -21,9 +22,14 @@ gnome.timerWorker = null;
 
 function renderKnob(){
   $(".knob").knob({
-    'min': 1,
+    'skin': 'tron',
+    'min': 40,
     'max': 240,
-    'width': 100,
+    'width': 150,
+    'cursor': true,
+    'thickness': 0.4,
+    'angleArc': 320,
+    'angleOffset': -160,
     'change': function (val) { gnome.tempo = val; },
     'release': function (val) { gnome.tempo = val; }
   });
@@ -59,7 +65,10 @@ function gnomeScheduleNote( beatNumber, time ) {
 
   // create an oscillator
   var osc = audioContext.createOscillator();
-  osc.connect( audioContext.destination );
+  gnomeGain = audioContext.createGain(); // Create boost pedal 
+  osc.connect(gnomeGain); // Connect bass guitar to boost pedal
+  gnomeGain.connect(audioContext.destination); // Connect boost pedal to amplifier
+  gnomeGain.gain.value = gnome.oscVol/24;
   if (beatNumber % gnome.subdivision[gnome.subdivision.selected] === 0 )    // quarter notes = medium pitch
       osc.frequency.value = 880.0;
   else                        // other subdivided notes = high pitch
@@ -85,11 +94,30 @@ function gnomePlay() {
       gnome.subdivision.current = 0;
       gnome.nextNoteTime = audioContext.currentTime;
       timerWorker.postMessage("start");
+      $("#gnomePlay").hide();
+      $("#gnomeStop").show();
       return "stop";
   } else {
+      $("#gnomePlay").show();
+      $("#gnomeStop").hide();
       timerWorker.postMessage("stop");
       return "play";
   }
+}
+
+function tempoChange(value) {
+  $(".knob").val(gnome.tempo + value).trigger('change');
+}
+
+
+function gnomeVolumeChange(direction) {
+  if (direction === "up" && gnome.oscVol !== 24) {
+    gnome.oscVol++;
+  } else if (direction === "down" && gnome.oscVol !== 0) {
+    gnome.oscVol--;
+  }
+  gnomeGain.gain.value = (Math.exp(gnome.oscVol/24)-1)/(Math.E-1);
+  $("#gnomeVolDisplay").html(Math.round(gnome.oscVol/24*100)+"%");
 }
 
 function resetCanvas (e) {
@@ -112,13 +140,21 @@ function draw() {
 
   // We only need to draw if the note has moved.
   if (gnome.lastSubdivisionDrawn != currentNote) {
-      var x = Math.floor( gnomeCanvas.width / 16 );
+      var x = Math.floor( gnomeCanvas.width );
       gnomeCanvasContext.clearRect(0,0,gnomeCanvas.width, gnomeCanvas.height); 
       for (var i=0; i<gnome.totalBeats * gnome.subdivision[gnome.subdivision.selected]; i++) {
           gnomeCanvasContext.fillStyle = ( currentNote == i ) ? 
-              ((currentNote%gnome.subdivision[gnome.subdivision.selected] === 0)?"red":"green") : "black";
-          // gnomeCanvasContext.fillRect( x * (i+1), x + 1, x/2, x/2 );
-          gnomeCanvasContext.fillRect( (i*x)/2,0,10,10 );
+              ((currentNote%gnome.subdivision[gnome.subdivision.selected] === 0)?"red":"green") : "#754B75";
+          //gnomeCanvasContext.fillRect( (x / 4) +
+                                       // (x / (2 * (gnome.totalBeats * gnome.subdivision[gnome.subdivision.selected]))) *
+                                       // (i * (1 + 1/(gnome.totalBeats * gnome.subdivision[gnome.subdivision.selected]))),
+                                       // 0, 10, 10 );
+          gnomeCanvasContext.beginPath();
+          gnomeCanvasContext.arc((x / 4) +
+                  (x / (2 * (gnome.totalBeats * gnome.subdivision[gnome.subdivision.selected]))) *
+                  (i * (1 + 1/(gnome.totalBeats * gnome.subdivision[gnome.subdivision.selected]))),
+                  gnomeCanvas.height/2, 10, 0 ,2*Math.PI);
+          gnomeCanvasContext.fill();
       }
       gnome.lastSubdivisionDrawn = currentNote;
   }
@@ -133,14 +169,14 @@ function gnomeInit() {
   // setTempo(60);
 
 	var container = document.createElement( 'div' );
-  container.className = "container";
+  container.className = "gnomeBlinky";
 
   gnomeCanvas = document.createElement( 'canvas' );
   gnomeCanvasContext = gnomeCanvas.getContext( '2d' );
-  gnomeCanvas.width = window.outerWidth; 
-  gnomeCanvas.height = window.innerHeight/10;
+  gnomeCanvas.width = window.innerWidth; 
+  gnomeCanvas.height = window.innerHeight/20;
 
-  $("#gnomeTempoKnob").before( container );
+  $("#gnomeUi").prepend( container );
   $(container).append(gnomeCanvas);
   gnomeCanvasContext.strokeStyle = "#ffffff";
   gnomeCanvasContext.lineWidth = 1;

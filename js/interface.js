@@ -6,6 +6,7 @@ function selectInterface(interface) {
   $("#" + ui.currentInterface + "Heading").addClass("currentInterfaceHeading");
   $(".menuContainer").hide();
   $(".menu").hide();
+  $(".menuBtn").removeClass("clicked");
   $("#" + ui.currentInterface + "Menus").show();
 }
 
@@ -47,6 +48,8 @@ function buttonRouter(passedState) {
   			case "Stop":
 					gnomePlay();
 					break;
+        case "tempoChange":
+          tempoChange(parseInt(destination.amount));
   		}
       break;
   }
@@ -80,10 +83,16 @@ $(document).ready(function() {
     menuBtnPress("Settings");
   });
   $("#droneVolMinus").on("click", function(){
-    volumeChange("down");
+    droneVolumeChange("down");
   });
   $("#droneVolPlus").on("click", function(){
-    volumeChange("up");
+    droneVolumeChange("up");
+  });
+  $("#gnomeVolMinus").on("click", function(){
+    gnomeVolumeChange("down");
+  });
+  $("#gnomeVolPlus").on("click", function(){
+    gnomeVolumeChange("up");
   });
   $("#calibrateDown").on("click", function(){
     calibratePitch("down");
@@ -101,6 +110,9 @@ $(document).ready(function() {
 
   $("#subdivisionSelector").change(function(){
   	gnome.subdivision.selected = $(this).val();
+  });
+
+  $('#button').on('click', function() {
   });
 
   //Create keyboard shortcut event handlers
@@ -128,10 +140,10 @@ $(document).ready(function() {
     pitchChange("up");
   });
   listener.simple_combo('-', function(){
-    volumeChange("down");
+    droneVolumeChange("down");
   });
   listener.simple_combo('=', function(){
-    volumeChange("up");
+    droneVolumeChange("up");
   });
   listener.simple_combo('left', function(){ 
     calibratePitch("down");

@@ -261,7 +261,7 @@ function setUserDefault(definedPitch){
   }
 }
 
-function volumeChange(direction) {
+function droneVolumeChange(direction) {
   if (direction === "up" && drone.volume !== 24) {
     drone.volume++;
   } else if (direction === "down" && drone.volume !== 0) {

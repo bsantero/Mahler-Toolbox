@@ -110,6 +110,10 @@ button.ctlButton:focus {
   cursor: pointer;
 }
 
+.gnomeBlinky {
+  padding-left: 8px;
+}
+
 .hide {
   display: none;
 }
@@ -140,6 +144,11 @@ button.ctlButton:focus {
 .settingsMenu {
   text-align: center;
   padding-bottom: 1rem;
+}
+
+.tempoChange button:nth-child(2) {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
 }
 
 .vertical-center {
@@ -193,6 +202,11 @@ button.ctlButton:focus {
   border-left: 3px solid #754B75;
   border-right: 3px solid #754B75;
 }
+
+#navbar span:last-child {
+  border-right: none;
+}
+
 #gnomeUi,
 #gnomeUi,
 #quencherUi {
@@ -266,6 +280,17 @@ button.ctlButton:focus {
   border-radius: 100%;
   margin: auto;
   opacity: 0;
+}
+
+#subdivisionSelector {
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  border: 0;
+  background-color: #754B75;
+}
+
+#gnomeDisplay {
+  padding: 0;
 }
 
 #gnomeTempoKnob {
