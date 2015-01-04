@@ -144,7 +144,7 @@ function draw() {
       gnomeCanvasContext.clearRect(0,0,gnomeCanvas.width, gnomeCanvas.height); 
       for (var i=0; i<gnome.totalBeats * gnome.subdivision[gnome.subdivision.selected]; i++) {
           gnomeCanvasContext.fillStyle = ( currentNote == i ) ? 
-              ((currentNote%gnome.subdivision[gnome.subdivision.selected] === 0)?"red":"green") : "#754B75";
+              ((currentNote%gnome.subdivision[gnome.subdivision.selected] === 0)?"red":"blue") : "#754B75";
           //gnomeCanvasContext.fillRect( (x / 4) +
                                        // (x / (2 * (gnome.totalBeats * gnome.subdivision[gnome.subdivision.selected]))) *
                                        // (i * (1 + 1/(gnome.totalBeats * gnome.subdivision[gnome.subdivision.selected]))),

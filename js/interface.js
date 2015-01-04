@@ -24,7 +24,7 @@ function buttonRouter(passedState) {
 	} else {
   	destination = $(this).data("dest");
 	}
-	console.log(destination);
+	// console.log(destination);
   switch (destination.ui) {
   	case "drone":
   		switch (destination.action) {
@@ -39,6 +39,10 @@ function buttonRouter(passedState) {
     		case "Reset":
     			resetPitch();
     			break;
+        case "volChange":
+          console.log("calling droneVolumeChange");
+          droneVolumeChange(destination.dir);
+          break;
   		}
   		break;
     case "gnome":
@@ -50,6 +54,10 @@ function buttonRouter(passedState) {
 					break;
         case "tempoChange":
           tempoChange(parseInt(destination.amount));
+          break;
+        case "volChange":
+          gnomeVolumeChange(destination.dir);
+          break;
   		}
       break;
   }
@@ -140,10 +148,12 @@ $(document).ready(function() {
     pitchChange("up");
   });
   listener.simple_combo('-', function(){
-    droneVolumeChange("down");
+    buttonRouter({"ui":ui.currentInterface, "action":"volChange", "dir":"down"});
+    // droneVolumeChange("down");
   });
   listener.simple_combo('=', function(){
-    droneVolumeChange("up");
+    buttonRouter({"ui":ui.currentInterface, "action":"volChange", "dir":"up"});
+    // droneVolumeChange("up");
   });
   listener.simple_combo('left', function(){ 
     calibratePitch("down");

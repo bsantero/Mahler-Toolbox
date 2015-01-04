@@ -214,7 +214,7 @@ function pitchChange(keydir) {
   $("span.display.frequency").html(Math.round(drone.currentPitch.frequency) + "Hz");
 }
 
-function dronePlay(action) {
+function dronePlay() {
   if (!drone.isPlaying) {
     newDrone();
     drone.osc.frequency.value = drone.currentPitch.frequency;
