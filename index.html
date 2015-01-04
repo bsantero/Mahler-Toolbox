@@ -55,16 +55,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           <div id="droneSettingsMenu" class="menu settingsMenu">
             <h3>Drone Settings</h3>
             <div id="droneVolControl">
-                <span class="pull-left">Volume:</span>
-                <span id="droneVolMinus" class="glyphicon glyphicon-minus keyButton" aria-hidden="true"></span>
-                <span id="droneVolDisplay">75%</span>
-                <span id="droneVolPlus" class="glyphicon glyphicon-plus keyButton" aria-hidden="true"></span>
+              <span class="pull-left">Volume:</span>
+              <span id="droneVolMinus" class="glyphicon glyphicon-minus settingsChange keyButton" aria-hidden="true" data-dest='{"ui":"drone", "action":"volChange", "dir":"down"}'></span>
+              <span id="droneVolDisplay">75%</span>
+              <span id="droneVolPlus" class="glyphicon glyphicon-plus settingsChange keyButton" aria-hidden="true" data-dest='{"ui":"drone", "action":"volChange", "dir":"up"}'></span>
             </div>
             <div id="pitchCalibrate">
-                <span class="pull-left">Calibration:</span>
-                <span id="calibrateDown" class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-                <span id="calibrateDisplay">440Hz</span>
-                <span id="calibrateUp" class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+              <span class="pull-left">Calibration:</span>
+              <span id="calibrateDown" class="glyphicon glyphicon-minus settingsChange keyButton" aria-hidden="true" data-dest='{"ui":"drone", "action":"calibrationChange"}'></span>
+              <span id="calibrateDisplay">440Hz</span>
+              <span id="calibrateUp" class="glyphicon glyphicon-plus settingsChange keyButton" aria-hidden="true" data-dest='{"ui":"drone", "action":"calibrationChange"}'></span>
             </div>
           </div>
         </div>
@@ -98,40 +98,55 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           <div id="gnomeSettingsMenu" class="menu settingsMenu">
             <h3>Gnome Settings</h3>
             <div id="gnomeVolControl">
-              <p>Volume</p>
-              <span id="gnomeVolMinus" class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-              <span id="gnomeVolDisplay">75%</span>
-              <span id="gnomeVolPlus" class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+              <p class="pull-left">Volume</p>
+              <span class="">
+                <span id="gnomeVolMinus" class="glyphicon glyphicon-minus settingsChange keyButton" aria-hidden="true" data-dest='{"ui":"gnome", "action":"volChange", "dir":"down"}'></span>
+                <span id="gnomeVolDisplay">75%</span>
+                <span id="gnomeVolPlus" class="glyphicon glyphicon-plus settingsChange keyButton" aria-hidden="true" data-dest='{"ui":"gnome", "action":"volChange", "dir":"up"}'></span>
+              </span>
+            </div>
+            <!-- <div id="gnomeVisualSelect">
+              <p class="pull-left">Visual Blinky</p>
+                <select id="blinkySelector" class="selector">
+                  <option selected="selected">Yes</option>
+                  <option>No</option>
+                </select>
+            </div> -->
+            <div id="gnomeBeats">
+              <p class="pull-left">Beats</p>
+              <span class="">
+                <span id="gnomeBeatsMinus" class="glyphicon glyphicon-minus settingsChange keyButton" aria-hidden="true" data-dest='{"ui":"gnome", "action":"beatsChange", "dir":"down"}'></span>
+                <span id="gnomeBeatsDisplay">2</span>
+                <span id="gnomeBeatsPlus" class="glyphicon glyphicon-plus settingsChange keyButton" aria-hidden="true" data-dest='{"ui":"gnome", "action":"beatsChange", "dir":"up"}'></span>
+              </span>
+            </div>
+            <div id="gnomeSubSelect">
+              <p class="pull-left">Subdivision</p>
+                <select id="subdivisionSelector" class="selector">
+                  <option>Half</option>
+                  <option selected="selected">Quarter</option>
+                  <option>Eighth</option>
+                  <option>Sixteenth</option>
+                </select>
             </div>
           </div>
         </div>
-
-        <div id="gnomeUp" class="tempoChange col-xs-6">
-          <h3 class="">Up</h3>
-          <button id="gnomePlusOne" class="ctlButton" data-dest='{"ui":"gnome", "action":"tempoChange", "amount":"1"}'>+1</button>
-          <button id="gnomePlusTen" class="ctlButton" data-dest='{"ui":"gnome", "action":"tempoChange", "amount":"10"}'>+10</button>
-        </div>
-        <div id="gnomeDown" class="tempoChange col-xs-6">
-          <h3 class="">Down</h3>
+        <div id="gnomeDown" class="gnome tempoChange col-xs-3">
+          <h3 class="tempoHeader">Down</h3>
           <button id="gnomeMinusOne" class="ctlButton" data-dest='{"ui":"gnome", "action":"tempoChange", "amount":"-1"}'>-1</button>
           <button id="gnomeMinusTen" class="ctlButton" data-dest='{"ui":"gnome", "action":"tempoChange", "amount":"-10"}'>-10</button>
         </div>
-        <div id="gnomeDisplay" class="nopad col-sm-4">
+        <div class="controls col-xs-6">
           <div id="gnomeTempoKnob" class="tempo-dial">
-            <h1>Tempo</h1><input class="knob option input" value="120" data-linecap=round>
+            <h1 class="tempoHeader">Tempo</h1><input class="knob option input" value="120" data-linecap=round>
           </div>
-          <select id="subdivisionSelector">
-            <option>Half</option>
-            <option selected="selected">Quarter</option>
-            <option>Eighth</option>
-            <option>Sixteenth</option>
-          </select>
-          <div class="">
-            <div class="controls">
-              <button id="gnomePlay" class="ctlButton" data-dest='{"ui":"gnome", "action":"Play"}'>play</button>
-              <button id="gnomeStop" class="ctlButton" data-dest='{"ui":"gnome", "action":"Stop"}'>stop</button>
-            </div>
-          </div>
+          <button id="gnomePlay" class="ctlButton" data-dest='{"ui":"gnome", "action":"Play"}'>play</button>
+          <button id="gnomeStop" class="ctlButton" data-dest='{"ui":"gnome", "action":"Stop"}'>stop</button>
+        </div>
+        <div id="gnomeUp" class="gnome tempoChange col-xs-3">
+          <h3 class="tempoHeader">Up</h3>
+          <button id="gnomePlusOne" class="ctlButton" data-dest='{"ui":"gnome", "action":"tempoChange", "amount":"1"}'>+1</button>
+          <button id="gnomePlusTen" class="ctlButton" data-dest='{"ui":"gnome", "action":"tempoChange", "amount":"10"}'>+10</button>
         </div>
       </div>
 

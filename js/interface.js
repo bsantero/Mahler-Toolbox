@@ -18,13 +18,14 @@ function menuBtnPress(menu) {
 }
 
 function buttonRouter(passedState) {
+  // console.log("inside buttonRouter");
 	var destination;
 	if (passedState.ui) {
 		destination = passedState;
 	} else {
   	destination = $(this).data("dest");
 	}
-	// console.log(destination);
+	console.log(destination);
   switch (destination.ui) {
   	case "drone":
   		switch (destination.action) {
@@ -40,7 +41,7 @@ function buttonRouter(passedState) {
     			resetPitch();
     			break;
         case "volChange":
-          console.log("calling droneVolumeChange");
+          // console.log("calling droneVolumeChange");
           droneVolumeChange(destination.dir);
           break;
   		}
@@ -57,6 +58,12 @@ function buttonRouter(passedState) {
           break;
         case "volChange":
           gnomeVolumeChange(destination.dir);
+          break;
+        case "beatsChange":
+          // console.log("calling gnomeBeatsChange");
+          gnomeBeatsChange(destination.dir);
+          gnomePlay();
+          gnomePlay();
           break;
   		}
       break;
@@ -83,24 +90,13 @@ $(document).ready(function() {
   $("#navbar .clickable").on("click", selectInterface);
 
   $(".ctlButton").on("click", buttonRouter);
+  $(".settingsChange").on("click", buttonRouter);
 
   $("#InfoButton").on("click", function(){
     menuBtnPress("Info");
   });
   $("#SettingsButton").on("click", function(){
     menuBtnPress("Settings");
-  });
-  $("#droneVolMinus").on("click", function(){
-    droneVolumeChange("down");
-  });
-  $("#droneVolPlus").on("click", function(){
-    droneVolumeChange("up");
-  });
-  $("#gnomeVolMinus").on("click", function(){
-    gnomeVolumeChange("down");
-  });
-  $("#gnomeVolPlus").on("click", function(){
-    gnomeVolumeChange("up");
   });
   $("#calibrateDown").on("click", function(){
     calibratePitch("down");
@@ -118,6 +114,13 @@ $(document).ready(function() {
 
   $("#subdivisionSelector").change(function(){
   	gnome.subdivision.selected = $(this).val();
+    gnomePlay();
+    gnomePlay();
+  });
+  $("#blinkySelector").change(function(){
+    gnome.blinky = $(this).val();
+    gnomePlay();
+    gnomePlay();
   });
 
   $('#button').on('click', function() {
@@ -149,11 +152,9 @@ $(document).ready(function() {
   });
   listener.simple_combo('-', function(){
     buttonRouter({"ui":ui.currentInterface, "action":"volChange", "dir":"down"});
-    // droneVolumeChange("down");
   });
   listener.simple_combo('=', function(){
     buttonRouter({"ui":ui.currentInterface, "action":"volChange", "dir":"up"});
-    // droneVolumeChange("up");
   });
   listener.simple_combo('left', function(){ 
     calibratePitch("down");

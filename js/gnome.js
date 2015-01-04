@@ -12,13 +12,16 @@ gnome.subdivision = {	"selected": "Quarter",
 	                    "Eighth": 2,
 	                    "Sixteenth": 4,
 	                  	"current": null};
-gnome.totalBeats = 4;
+gnome.totalBeats = 2;
 gnome.noteLength = 0.05;
+gnome.blinky = "yes";
 gnomeCanvas = undefined;
 gnomeCanvasContext = undefined;
 gnome.lastSubdivisionDrawn = -1;
 gnome.notesInQueue = [];
 gnome.timerWorker = null;
+var gnomeGain = null,
+highlightToggle = true;
 
 function renderKnob(){
   $(".knob").knob({
@@ -68,11 +71,15 @@ function gnomeScheduleNote( beatNumber, time ) {
   gnomeGain = audioContext.createGain(); // Create boost pedal 
   osc.connect(gnomeGain); // Connect bass guitar to boost pedal
   gnomeGain.connect(audioContext.destination); // Connect boost pedal to amplifier
-  gnomeGain.gain.value = gnome.oscVol/24;
-  if (beatNumber % gnome.subdivision[gnome.subdivision.selected] === 0 )    // quarter notes = medium pitch
-      osc.frequency.value = 880.0;
-  else                        // other subdivided notes = high pitch
-      osc.frequency.value = 659.0;
+  if (beatNumber % gnome.subdivision[gnome.subdivision.selected] === 0 ) {    // quarter notes = medium pitch
+    osc.frequency.value = 880.0;
+    gnomeGain.gain.value = gnome.oscVol/24;
+  }
+  else {                       // other subdivided notes = 4th down
+    osc.frequency.value = 659.0;
+    gnomeGain.gain.value = (gnome.oscVol/24)*0.5;
+  }
+
 
   osc.start( time );
   osc.stop( time + gnome.noteLength );
@@ -109,7 +116,6 @@ function tempoChange(value) {
   $(".knob").val(gnome.tempo + value).trigger('change');
 }
 
-
 function gnomeVolumeChange(direction) {
   if (direction === "up" && gnome.oscVol !== 24) {
     gnome.oscVol++;
@@ -118,6 +124,20 @@ function gnomeVolumeChange(direction) {
   }
   gnomeGain.gain.value = (Math.exp(gnome.oscVol/24)-1)/(Math.E-1);
   $("#gnomeVolDisplay").html(Math.round(gnome.oscVol/24*100)+"%");
+}
+
+function gnomeBeatsChange(dir) {
+  console.log("inside gnomeBeatsChange");
+  if (gnome.totalBeats == 1 && dir == "down" || gnome.totalBeats == 99 && dir == "up") {
+    return;
+  } else {
+    if (dir == "down") {
+      gnome.totalBeats--;
+    } else if (dir == "up") {
+      gnome.totalBeats++;
+    }
+    $("#gnomeBeatsDisplay").html(gnome.totalBeats);
+  }
 }
 
 function resetCanvas (e) {
@@ -130,37 +150,55 @@ function resetCanvas (e) {
 }
 
 function draw() {
-  var currentNote = gnome.lastSubdivisionDrawn;
-  var currentTime = audioContext.currentTime;
+  if (gnome.blinky == "No") {
+    gnomeCanvasContext.clearRect(0,0,gnomeCanvas.width, gnomeCanvas.height); 
+    return;
+  } else {
+    var currentNote = gnome.lastSubdivisionDrawn;
+    var currentTime = audioContext.currentTime;
 
-  while (gnome.notesInQueue.length && gnome.notesInQueue[0].time < currentTime) {
-      currentNote = gnome.notesInQueue[0].note;
-      gnome.notesInQueue.splice(0,1);   // remove note from queue
-  }
+    while (gnome.notesInQueue.length && gnome.notesInQueue[0].time < currentTime) {
+        currentNote = gnome.notesInQueue[0].note;
+        gnome.notesInQueue.splice(0,1);   // remove note from queue
+    }
 
-  // We only need to draw if the note has moved.
-  if (gnome.lastSubdivisionDrawn != currentNote) {
-      var x = Math.floor( gnomeCanvas.width );
+    // We only need to draw if the note has moved.
+    if (gnome.lastSubdivisionDrawn != currentNote) {
+      var canWidth = Math.floor( gnomeCanvas.width );
+      var totalSubs = gnome.totalBeats * gnome.subdivision[gnome.subdivision.selected];
+      var highlight;
       gnomeCanvasContext.clearRect(0,0,gnomeCanvas.width, gnomeCanvas.height); 
       for (var i=0; i<gnome.totalBeats * gnome.subdivision[gnome.subdivision.selected]; i++) {
-          gnomeCanvasContext.fillStyle = ( currentNote == i ) ? 
-              ((currentNote%gnome.subdivision[gnome.subdivision.selected] === 0)?"red":"blue") : "#754B75";
-          //gnomeCanvasContext.fillRect( (x / 4) +
-                                       // (x / (2 * (gnome.totalBeats * gnome.subdivision[gnome.subdivision.selected]))) *
-                                       // (i * (1 + 1/(gnome.totalBeats * gnome.subdivision[gnome.subdivision.selected]))),
-                                       // 0, 10, 10 );
-          gnomeCanvasContext.beginPath();
-          gnomeCanvasContext.arc((x / 4) +
-                  (x / (2 * (gnome.totalBeats * gnome.subdivision[gnome.subdivision.selected]))) *
-                  (i * (1 + 1/(gnome.totalBeats * gnome.subdivision[gnome.subdivision.selected]))),
-                  gnomeCanvas.height/2, 10, 0 ,2*Math.PI);
-          gnomeCanvasContext.fill();
+        switch (totalSubs) {
+          case 1:   switch (highlightToggle) {
+                      case true:
+                        highlight = "red";
+                        break;
+                      case false:
+                        highlight = "#3B0F3B";
+                        break;
+                    }
+                    highlightToggle = !highlightToggle;
+                    gnomeCanvasContext.fillStyle = (currentNote%gnome.subdivision[gnome.subdivision.selected] === 0) ? highlight : "#754B75";
+                    xstart = (canWidth / 2);
+                    break;
+          default:  gnomeCanvasContext.fillStyle = ( currentNote == i ) ? 
+                      ((currentNote%gnome.subdivision[gnome.subdivision.selected] === 0)? "red" :"#3B0F3B") : "#754B75";
+                    xstart = (canWidth / (totalSubs+1)) + (i * (canWidth / (totalSubs+1)));
+                    break;
+          // default:  xstart = (canWidth / 4) + (canWidth / (2 * (totalSubs))) * (i * (1 + 1/(totalSubs)));
+          //           break;
+        }
+        gnomeCanvasContext.beginPath();
+        gnomeCanvasContext.arc( xstart, gnomeCanvas.height/2, 10, 0 ,2*Math.PI);
+        gnomeCanvasContext.fill();
       }
       gnome.lastSubdivisionDrawn = currentNote;
-  }
+    }
 
-  // set up to draw again
-  requestAnimFrame(draw);
+    // set up to draw again
+    requestAnimFrame(draw);
+  }
 }
 
 function gnomeInit() {

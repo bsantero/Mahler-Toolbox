@@ -32,9 +32,9 @@ button.ctlButton {
   padding: 1rem;
   /*font-size: 2rem;*/
   background-color: #754B75 !important;
-  -webkit-border-radius: 7px;
-  -moz-border-radius: 7px;
-  border-radius: 7px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
   border: none;
   -webkit-transition-duration: 0.2s;
   -moz-transition-duration: 0.2s;
@@ -54,14 +54,8 @@ button.ctlButton:focus {
   top: 0 !important;
 }
 
-.btn-clear {
-  background-color: #754B75 !important;/*
-  -webkit-transition-duration: 0.2s;
-  -moz-transition-duration: 0.2s;
-  transition-duration: 0.2s;*/
-}
-
 .btn-group button.menuBtn {
+  background-color: #754B75 !important;
   -webkit-transition-duration: 0.25s;
   -moz-transition-duration: 0.25s;
   transition-duration: 0.25s;
@@ -111,19 +105,11 @@ button.ctlButton:focus {
 }
 
 .gnomeBlinky {
-  padding-left: 8px;
+  /*padding-left: 8px;*/
 }
 
 .hide {
   display: none;
-}
-
-.keyButton {
-  /*float: right;*/
-  border: 1px solid white;
-  border-radius: 3px;
-  padding: 4px;
-  margin: auto 2px; 
 }
 
 .menu {
@@ -132,23 +118,45 @@ button.ctlButton:focus {
   position: absolute;
   top: 5.5rem;
   right: 1.5rem;
-  border-radius: 7px 0 7px 7px;
+  border-radius: 3px 0 4px 4px;
   background-color: #3B0F3B !important;
+  text-align: right;
+  font-size: 1.5rem;
   z-index: 10;
 }
 
+.menu .keyButton {
+  /*border: 1px solid white;*/
+  background-color: #754B75;
+  border-radius: 3px;
+  padding: 4px;
+  margin: auto 2px; 
+}
+
 .infoMenu {
-  text-align: right;
 }
 
 .settingsMenu {
-  text-align: center;
   padding-bottom: 1rem;
 }
 
-.tempoChange button:nth-child(2) {
-  margin-top: 2rem;
+.settingsMenu div {
   margin-bottom: 1rem;
+}
+
+.settingsMenu div:last-child {
+  margin-bottom: 0;
+}
+
+.settingsMenu div .pull-left{
+  margin-right: 2rem;
+}
+
+
+.selector {
+  font-size: 2rem;
+  border: 0;
+  background-color: #754B75;
 }
 
 .vertical-center {
@@ -199,8 +207,8 @@ button.ctlButton:focus {
 }
 
 #navbar span:nth-child(2) {
-  border-left: 3px solid #754B75;
-  border-right: 3px solid #754B75;
+  /*border-left: 3px solid #754B75;*/
+  /*border-right: 3px solid #754B75;*/
 }
 
 #navbar span:last-child {
@@ -282,12 +290,24 @@ button.ctlButton:focus {
   opacity: 0;
 }
 
-#subdivisionSelector {
-  margin-bottom: 2rem;
-  font-size: 2rem;
-  border: 0;
-  background-color: #754B75;
+#gnomeUi .tempoHeader {
+  margin: 0;
 }
+
+#gnomeUi .tempoChange button {
+  width: 5rem;
+}
+
+#gnomeUi .tempoChange button:nth-child(2) {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+#gnomeUi .controls button {
+  width: 100%;
+  margin: 0;
+}
+
 
 #gnomeDisplay {
   padding: 0;
