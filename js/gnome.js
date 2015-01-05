@@ -5,15 +5,19 @@ gnome.tempo = 120.0;
 gnome.lookahead = 25.0;
 gnome.scheduleAheadTime = 0.1;
 gnome.nextNoteTime = 0.0;
-gnome.subdivision = {	"selected": "Quarter",
-	                    "Whole": 0.25,
-	                    "Half": 0.5,
-	                    "Quarter": 1,
-	                    "Eighth": 2,
-	                    "Sixteenth": 4,
-	                  	"current": null};
-gnome.totalBeats = 2;
 gnome.noteLength = 0.05;
+gnome.totalBeats = 2;
+gnome.sub = {	"selected": "Eighth",
+              "Whole": 0.25,
+              "Half": {"Duple": 0.5, "Triple": 0.5},
+              "Quarter": {"Duple": 1, "Triple": 1},
+              "Eighth": {"Duple": 2, "Triple": 3},
+              "Sixteenth": {"Duple": 4, "Triple": 6},
+              "meter": "Duple",
+              "total": 2
+            };
+gnome.clicksPerBeat = 2;
+gnome.clicksPerMeasure = 4;
 gnome.blinky = "yes";
 gnomeCanvas = undefined;
 gnomeCanvasContext = undefined;
@@ -38,6 +42,15 @@ function renderKnob(){
   });
 }
 
+function setSubdivisionMeter() {
+  var division = gnome.sub,
+      meter = gnome.sub.meter,
+      current = gnome.sub[gnome.sub.selected];
+  gnome.sub.total = current[meter];
+  gnome.clicksPerMeasure = gnome.totalBeats * gnome.sub.total;
+  console.log(gnome.clicksPerMeasure);
+}
+
 // First, let's shim the requestAnimationFrame API, with a setTimeout fallback
 window.requestAnimFrame = (function(){
     return  window.requestAnimationFrame ||
@@ -54,11 +67,12 @@ function gnomeNextNote() {
   var secondsPerBeat = 60.0 / gnome.tempo ;   // Notice this picks up the CURRENT 
                                         			// tempo value to calculate beat length.
   // gnome.nextNoteTime += secondsPerBeat;    // Add beat length to last beat time
-  gnome.nextNoteTime += (1.0 / gnome.subdivision[gnome.subdivision.selected]) * secondsPerBeat;    // Add beat length to last beat time
+  gnome.nextNoteTime += (1.0 / gnome.sub.total) * secondsPerBeat;    // Add beat length to last beat time
 	// console.log(gnome.nextNoteTime);
-  gnome.subdivision.current++;    // Advance the beat number, wrap to zero
-  if (gnome.subdivision.current == gnome.totalBeats * gnome.subdivision[gnome.subdivision.selected]) {
-      gnome.subdivision.current = 0;
+  // setSubdivisionMeter();
+  gnome.sub.current++;    // Advance the beat number, wrap to zero
+  if (gnome.sub.current == gnome.clicksPerMeasure) {
+      gnome.sub.current = 0;
   }
 }
 
@@ -71,7 +85,7 @@ function gnomeScheduleNote( beatNumber, time ) {
   gnomeGain = audioContext.createGain(); // Create boost pedal 
   osc.connect(gnomeGain); // Connect bass guitar to boost pedal
   gnomeGain.connect(audioContext.destination); // Connect boost pedal to amplifier
-  if (beatNumber % gnome.subdivision[gnome.subdivision.selected] === 0 ) {    // quarter notes = medium pitch
+  if (beatNumber % gnome.sub.total === 0 ) {    // quarter notes = medium pitch
     osc.frequency.value = 880.0;
     gnomeGain.gain.value = gnome.oscVol/24;
   }
@@ -89,7 +103,7 @@ function gnomeScheduler() {
   // while there are notes that will need to play before the next interval, 
   // schedule them and advance the pointer.
   while (gnome.nextNoteTime < audioContext.currentTime + gnome.scheduleAheadTime ) {
-      gnomeScheduleNote( gnome.subdivision.current, gnome.nextNoteTime );
+      gnomeScheduleNote( gnome.sub.current, gnome.nextNoteTime );
       gnomeNextNote();
   }
 }
@@ -98,7 +112,7 @@ function gnomePlay() {
   gnome.isPlaying = !gnome.isPlaying;
 
   if (gnome.isPlaying) { // start playing
-      gnome.subdivision.current = 0;
+      gnome.sub.current = 0;
       gnome.nextNoteTime = audioContext.currentTime;
       timerWorker.postMessage("start");
       $("#gnomePlay").hide();
@@ -138,6 +152,7 @@ function gnomeBeatsChange(dir) {
     }
     $("#gnomeBeatsDisplay").html(gnome.totalBeats);
   }
+  setSubdivisionMeter();
 }
 
 function resetCanvas (e) {
@@ -150,55 +165,38 @@ function resetCanvas (e) {
 }
 
 function draw() {
-  if (gnome.blinky == "No") {
-    gnomeCanvasContext.clearRect(0,0,gnomeCanvas.width, gnomeCanvas.height); 
-    return;
-  } else {
-    var currentNote = gnome.lastSubdivisionDrawn;
-    var currentTime = audioContext.currentTime;
+  var currentNote = gnome.lastSubdivisionDrawn,
+      currentTime = audioContext.currentTime,
+      canWidth = Math.floor( gnomeCanvas.width ),
+      xstart;
 
-    while (gnome.notesInQueue.length && gnome.notesInQueue[0].time < currentTime) {
-        currentNote = gnome.notesInQueue[0].note;
-        gnome.notesInQueue.splice(0,1);   // remove note from queue
-    }
-
-    // We only need to draw if the note has moved.
-    if (gnome.lastSubdivisionDrawn != currentNote) {
-      var canWidth = Math.floor( gnomeCanvas.width );
-      var totalSubs = gnome.totalBeats * gnome.subdivision[gnome.subdivision.selected];
-      var highlight;
-      gnomeCanvasContext.clearRect(0,0,gnomeCanvas.width, gnomeCanvas.height); 
-      for (var i=0; i<gnome.totalBeats * gnome.subdivision[gnome.subdivision.selected]; i++) {
-        switch (totalSubs) {
-          case 1:   switch (highlightToggle) {
-                      case true:
-                        highlight = "red";
-                        break;
-                      case false:
-                        highlight = "#3B0F3B";
-                        break;
-                    }
-                    highlightToggle = !highlightToggle;
-                    gnomeCanvasContext.fillStyle = (currentNote%gnome.subdivision[gnome.subdivision.selected] === 0) ? highlight : "#754B75";
-                    xstart = (canWidth / 2);
-                    break;
-          default:  gnomeCanvasContext.fillStyle = ( currentNote == i ) ? 
-                      ((currentNote%gnome.subdivision[gnome.subdivision.selected] === 0)? "red" :"#3B0F3B") : "#754B75";
-                    xstart = (canWidth / (totalSubs+1)) + (i * (canWidth / (totalSubs+1)));
-                    break;
-          // default:  xstart = (canWidth / 4) + (canWidth / (2 * (totalSubs))) * (i * (1 + 1/(totalSubs)));
-          //           break;
-        }
-        gnomeCanvasContext.beginPath();
-        gnomeCanvasContext.arc( xstart, gnomeCanvas.height/2, 10, 0 ,2*Math.PI);
-        gnomeCanvasContext.fill();
-      }
-      gnome.lastSubdivisionDrawn = currentNote;
-    }
-
-    // set up to draw again
-    requestAnimFrame(draw);
+  while (gnome.notesInQueue.length && gnome.notesInQueue[0].time < currentTime) {
+      currentNote = gnome.notesInQueue[0].note;
+      gnome.notesInQueue.splice(0,1);   // remove note from queue
   }
+
+  // We only need to draw if the note has moved.
+  if (gnome.lastSubdivisionDrawn != currentNote) {
+    console.log("drawing notes");
+    gnomeCanvasContext.clearRect(0,0,gnomeCanvas.width, gnomeCanvas.height); 
+    for (var i=0; i < gnome.clicksPerMeasure; i++) {
+      gnomeCanvasContext.fillStyle = ( currentNote == i ) ? 
+      ((gnome.clicksPerMeasure % gnome.sub.total === i % gnome.sub.total)? "red" :"#3B0F3B") : "#754B75";
+      if (gnome.clicksPerMeasure == 1) {
+        console.log(gnome.clicksPerMeasure + "click");
+        xstart = canWidth / 2;
+      } else {
+        xstart = (canWidth / (gnome.clicksPerMeasure+1)) + (i * (canWidth / (gnome.clicksPerMeasure+1)));
+      }
+      gnomeCanvasContext.beginPath();
+      gnomeCanvasContext.arc( xstart, gnomeCanvas.height/2, 10, 0 ,2*Math.PI);
+      gnomeCanvasContext.fill();
+    }
+    gnome.lastSubdivisionDrawn = currentNote;
+  }
+
+  // set up to draw again
+  requestAnimFrame(draw);
 }
 
 function gnomeInit() {

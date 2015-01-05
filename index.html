@@ -120,12 +120,19 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <span id="gnomeBeatsPlus" class="glyphicon glyphicon-plus settingsChange keyButton" aria-hidden="true" data-dest='{"ui":"gnome", "action":"beatsChange", "dir":"up"}'></span>
               </span>
             </div>
+            <div id="gnomeMeterSelect">
+              <p class="pull-left">Meter</p>
+                <select id="meterSelector" class="selector">
+                  <option selected="selected">Duple</option>
+                  <option>Triple</option>
+                </select>
+            </div>
             <div id="gnomeSubSelect">
               <p class="pull-left">Subdivision</p>
                 <select id="subdivisionSelector" class="selector">
                   <option>Half</option>
-                  <option selected="selected">Quarter</option>
-                  <option>Eighth</option>
+                  <option>Quarter</option>
+                  <option selected="selected">Eighth</option>
                   <option>Sixteenth</option>
                 </select>
             </div>

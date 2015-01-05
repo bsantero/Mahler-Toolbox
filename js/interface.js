@@ -113,9 +113,21 @@ $(document).ready(function() {
   });
 
   $("#subdivisionSelector").change(function(){
-  	gnome.subdivision.selected = $(this).val();
-    gnomePlay();
-    gnomePlay();
+  	gnome.sub.selected = $(this).val();
+    setSubdivisionMeter();
+    if (gnome.isPlaying) {
+      gnomePlay();
+      gnomePlay();
+    }
+  });
+
+  $("#meterSelector").change(function(){
+    gnome.sub.meter = $(this).val();
+    setSubdivisionMeter();
+    if (gnome.isPlaying) {
+      gnomePlay();
+      gnomePlay();
+    }
   });
   $("#blinkySelector").change(function(){
     gnome.blinky = $(this).val();
